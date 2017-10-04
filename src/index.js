@@ -33,6 +33,10 @@ var Article = React.createClass({
     }) 
   },
 
+  onBtnDelClickHandler: function(e) {
+    e.preventDefault();//дописать - обработчик кнопки удаления книги
+  },
+
   render: function() {
     var author = this.props.data.author,
         book = this.props.data.book,
@@ -43,6 +47,12 @@ var Article = React.createClass({
         <p className='book__author'>{author}:</p>
         <p className='book__text'>{book}</p>
         <p className='book__year' >{year} </p>
+       
+        <button className='del_btn'
+          onClick={this.onBtnDelClickHandler}
+          ref='del_button'
+          >
+         Удалить книгу </button>
       </div>
     )
   }
@@ -83,31 +93,24 @@ var Add = React.createClass({
     return {
       agreeNotChecked: true,
       authorIsEmpty: true,
-      bookIsEmpty: true
+      bookIsEmpty: true,
+      yearIsEmpty: true
     };
   },
+  //фокус на компоненте с именем thisInput при рендере
   componentDidMount: function() {
-    ReactDOM.findDOMNode(this.refs.author).focus();
+    this.nameInput.focus();
   },
-  onBtnClickHandler: function(e) {
+
+  //обработчик добавления книги
+  onBtnAddClickHandler: function(e) {
     e.preventDefault();
-    var book = ReactDOM.findDOMNode(this.refs.book).value;
-    var author = ReactDOM.findDOMNode(this.refs.author).value;
+    //получить значения из input, создать из них структуру, передать её в Library
 
-    var item = [{
-      author: author,
-      book: book
-    }];
-
-    book= '';
-    this.setState({bookIsEmpty: true});
-
-    author = '';
-    this.setState({authorIsEmpty: true});
   },
   
   //отмечаем, что чекбокс включен/выключен
-  onCheckRuleClick: function(e) {
+  onCheckRuleClick: function() {
     this.setState({agreeNotChecked: !this.state.agreeNotChecked});
   },
 
@@ -119,36 +122,46 @@ var Add = React.createClass({
       this.setState({[''+fieldName]:true})
     }
   },
+
   render: function() {
     var agreeNotChecked = this.state.agreeNotChecked,
         authorIsEmpty = this.state.authorIsEmpty,
-        bookIsEmpty = this.state.bookIsEmpty;
+        bookIsEmpty = this.state.bookIsEmpty,
+        yearIsEmpty = this.state.yearIsEmpty;
+
     return (
       <form className='add cf'>
         <input
           type='text'
           className='add__author'
+          value={this.state.myValue}
           onChange={this.onFieldChange.bind(this, 'authorIsEmpty')}
+          ref={(input) => { this.nameInput = input; }} // фокусируемся изначально на поле "Автор"
           placeholder='Имя автора'
-          ref='author'
         />
 
         <input
           className='add__book'
+          value={this.state.myValue}
           onChange={this.onFieldChange.bind(this, 'bookIsEmpty')}
           placeholder='Название книги'
-          ref='book'
+        ></input>
+
+        <input
+          className='add__year'
+          value={this.state.myValue}
+          onChange={this.onFieldChange.bind(this, 'yearIsEmpty')}
+          placeholder='Год издания книги'
         ></input>
 
         <label className='add__checkrule'>
-          <input type='checkbox' ref='checkrule' onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
+          <input type='checkbox' onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
         </label>
 
         <button
           className='add__btn'
-          onClick={this.onBtnClickHandler}
-          ref='alert_button'
-          disabled={agreeNotChecked || authorIsEmpty || bookIsEmpty}
+          onClick={this.onBtnAddClickHandler}
+          disabled={agreeNotChecked || authorIsEmpty || bookIsEmpty || yearIsEmpty}
           >
           Добавить книгу
         </button>
