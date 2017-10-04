@@ -150,7 +150,7 @@ var Add = React.createClass({
           ref='alert_button'
           disabled={agreeNotChecked || authorIsEmpty || bookIsEmpty}
           >
-          Отобразить книгу
+          Добавить книгу
         </button>
       </form>
     );

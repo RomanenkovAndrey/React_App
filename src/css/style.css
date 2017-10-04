@@ -3,7 +3,7 @@
 }
 
 body {
-  background: rgba(0, 102, 255, 0.38);
+  background: #37BFC2;
   font-family: sans-serif;
 }
 
@@ -11,13 +11,15 @@ p {
   margin: 0 0 5px;
 }
 
+
 .article {
   background: #FFF;
   border: 1px solid rgba(0, 89, 181, 0.82);
   width: 600px;
-  margin: 0 0 5px;
-  box-shadow: 2px 2px 5px -1px rgb(0, 81, 202);
+  margin: 0 0 15px;
+  box-shadow: 2px 2px 5px -1px rgb(4, 58, 133);
   padding: 3px 5px;
+  border-radius: 5px;
 }
 
 .book__author {
@@ -26,10 +28,11 @@ p {
 }
 
 .add {
-  margin: 0 5px 5px 0;
+  margin: 0 5px 5px 200px;
   width: 210px;
-  border: 1px dashed rgba(0, 89, 181, 0.82);
+  border: 2px solid rgba(209, 115, 27, 0.82);
   padding: 5px;
+  border-radius: 5px;
 }
 
 .add__author, .add__book, .add__btn, .add__checkrule {
@@ -37,7 +40,8 @@ p {
   margin: 0 0 5px 0;
   padding: 5px;
   width: 94%;
-  border: 1px solid rgba(0, 89, 181, 0.82);
+  border: 1px solid rgba(26, 34, 109, 0.82);
+  border-radius: 5px;
 }
 .add__checkrule {
   border: none;
@@ -48,8 +52,16 @@ p {
   color: #FFF;
   text-transform: uppercase;
   background: #007DDC;
+  border-radius: 5px;
 }
 .add__btn:disabled {
   background: #CCC;
   color: #999;
+}
+
+.app{
+  position: absolute;
+  left: 30%;
+  top:0;
+  padding-top:70px;
 }
