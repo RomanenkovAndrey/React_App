@@ -20,17 +20,9 @@ p {
   padding: 3px 5px;
 }
 
-.news__author {
+.book__author {
   text-decoration: underline;
   color: #007DDC;
-}
-.news__count {
-  margin: 10px 0 0 0;
-  display: block;
-}
-
-.test-input {
-  margin: 0 5px 5px 0;
 }
 
 .add {
@@ -39,7 +31,8 @@ p {
   border: 1px dashed rgba(0, 89, 181, 0.82);
   padding: 5px;
 }
-.add__author, .add__text, .add__btn, .add__checkrule {
+
+.add__author, .add__book, .add__btn, .add__checkrule {
   display: block;
   margin: 0 0 5px 0;
   padding: 5px;

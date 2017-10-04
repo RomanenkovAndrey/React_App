@@ -3,81 +3,62 @@ import ReactDOM from 'react-dom'
 import { render } from 'react-dom'
 
 import './css/style.css';
-import './EventEmitter.js';
 
-var my_news = [
+//Некоторый начальный набор книг
+var books = [
   {
-    author: 'Саша Печкин',
-    text: 'В четчерг, четвертого числа...',
-    bigText: 'в четыре с четвертью часа четыре чёрненьких чумазеньких чертёнка чертили чёрными чернилами чертёж.'
+    author: 'Замятин',
+    book: 'Мы',
+    year:'1986'
   },
   {
-    author: 'Просто Вася',
-    text: 'Считаю, что $ должен стоить 35 рублей!',
-    bigText: 'А евро 42!'
+    author: 'Толкиен',
+    book: 'Властелин колец',
+    year:'1996'
   },
   {
-    author: 'Гость',
-    text: 'Бесплатно. Скачать. Лучший сайт - http://localhost:3000',
-    bigText: 'На самом деле платно, просто нужно прочитать очень длинное лицензионное соглашение'
+    author: 'Чак Паланик',
+    book: 'Бойцовский клуб',
+    year:'2006'
   }
 ];
 
-window.ee = new EventEmitter();
-
+//формирование списка книг - по одной
 var Article = React.createClass({
   propTypes: {
     data: React.PropTypes.shape({
       author: React.PropTypes.string.isRequired,
-      text: React.PropTypes.string.isRequired,
-      bigText: React.PropTypes.string.isRequired
-    })
+      book: React.PropTypes.string.isRequired,
+      year: React.PropTypes.string.isRequired
+    }) 
   },
-  getInitialState: function() {
-    return {
-      visible: false
-    };
-  },
-  readmoreClick: function(e) {
-    e.preventDefault();
-    this.setState({visible: true});
-  },
+
   render: function() {
     var author = this.props.data.author,
-        text = this.props.data.text,
-        bigText = this.props.data.bigText,
-        visible = this.state.visible;
+        book = this.props.data.book,
+        year = this.props.data.year;
 
     return (
       <div className='article'>
-        <p className='news__author'>{author}:</p>
-        <p className='news__text'>{text}</p>
-        <a href="#"
-          onClick={this.readmoreClick}
-          className={'news__readmore ' + (visible ? 'none': '')}>
-          Подробнее
-        </a>
-        <p className={'news__big-text ' + (visible ? '': 'none')}>{bigText}</p>
+        <p className='book__author'>{author}:</p>
+        <p className='book__text'>{book}</p>
+        <p className='book__year' >{year} </p>
       </div>
     )
   }
 });
 
-var News = React.createClass({
+var Library = React.createClass({
   propTypes: {
     data: React.PropTypes.array.isRequired
   },
-  getInitialState: function() {
-    return {
-      counter: 0
-    }
-  },
+
   render: function() {
     var data = this.props.data;
-    var newsTemplate;
+    var libraryTemplate;
 
     if (data.length > 0) {
-      newsTemplate = data.map(function(item, index) {
+      libraryTemplate = data.map(function(item, index) {
         return (
           <div key={index}>
             <Article data={item} />
@@ -85,25 +66,24 @@ var News = React.createClass({
         )
       })
     } else {
-      newsTemplate = <p>К сожалению новостей нет</p>
+      libraryTemplate = <p>Ни одна книга ещё не добавлена</p>
     }
 
     return (
-      <div className='news'>
-        {newsTemplate}
-        <strong
-          className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.length}</strong>
+      <div className='book'>
+        {libraryTemplate}
       </div>
     );
   }
 });
 
+//добавление книг
 var Add = React.createClass({
   getInitialState: function() {
     return {
       agreeNotChecked: true,
       authorIsEmpty: true,
-      textIsEmpty: true
+      bookIsEmpty: true
     };
   },
   componentDidMount: function() {
@@ -111,25 +91,27 @@ var Add = React.createClass({
   },
   onBtnClickHandler: function(e) {
     e.preventDefault();
-    var textEl = ReactDOM.findDOMNode(this.refs.text);
-
+    var book = ReactDOM.findDOMNode(this.refs.book).value;
     var author = ReactDOM.findDOMNode(this.refs.author).value;
-    var text = textEl.value;
 
     var item = [{
       author: author,
-      text: text,
-      bigText: '...'
+      book: book
     }];
 
-    window.ee.emit('News.add', item);
+    book= '';
+    this.setState({bookIsEmpty: true});
 
-    textEl.value = '';
-    this.setState({textIsEmpty: true});
+    author = '';
+    this.setState({authorIsEmpty: true});
   },
+  
+  //отмечаем, что чекбокс включен/выключен
   onCheckRuleClick: function(e) {
     this.setState({agreeNotChecked: !this.state.agreeNotChecked});
   },
+
+  //каждое из полей инпута заполнено и не состоит из одних только пробелов/переносов каретки, либо пусто
   onFieldChange: function(fieldName, e) {
     if (e.target.value.trim().length > 0) {
       this.setState({[''+fieldName]:false})
@@ -140,67 +122,61 @@ var Add = React.createClass({
   render: function() {
     var agreeNotChecked = this.state.agreeNotChecked,
         authorIsEmpty = this.state.authorIsEmpty,
-        textIsEmpty = this.state.textIsEmpty;
+        bookIsEmpty = this.state.bookIsEmpty;
     return (
       <form className='add cf'>
         <input
           type='text'
           className='add__author'
           onChange={this.onFieldChange.bind(this, 'authorIsEmpty')}
-          placeholder='Ваше имя'
+          placeholder='Имя автора'
           ref='author'
         />
-        <textarea
-          className='add__text'
-          onChange={this.onFieldChange.bind(this, 'textIsEmpty')}
-          placeholder='Текст новости'
-          ref='text'
-        ></textarea>
+
+        <input
+          className='add__book'
+          onChange={this.onFieldChange.bind(this, 'bookIsEmpty')}
+          placeholder='Название книги'
+          ref='book'
+        ></input>
+
         <label className='add__checkrule'>
-          <input type='checkbox' ref='checkrule' onChange={this.onCheckRuleClick}/>Я согласен с правилами
+          <input type='checkbox' ref='checkrule' onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
         </label>
 
         <button
           className='add__btn'
           onClick={this.onBtnClickHandler}
           ref='alert_button'
-          disabled={agreeNotChecked || authorIsEmpty || textIsEmpty}
+          disabled={agreeNotChecked || authorIsEmpty || bookIsEmpty}
           >
-          Опубликовать новость
+          Отобразить книгу
         </button>
       </form>
     );
   }
 });
 
+//само приложение
 var App = React.createClass({
   getInitialState: function() {
     return {
-      news: my_news
+      library: books
     };
   },
-  componentDidMount: function() {
-    var self = this;
-    window.ee.addListener('News.add', function(item) {
-      var nextNews = item.concat(self.state.news);
-      self.setState({news: nextNews});
-    });
-  },
-  componentWillUnmount: function() {
-    window.ee.removeListener('News.add');
-  },
+ 
   render: function() {
-    console.log('render');
     return (
       <div className='app'>
         <Add />
-        <h3>Новости</h3>
-        <News data={this.state.news} />
+        <h3>Библиотека</h3>
+        <Library data={this.state.library} />
       </div>
     );
   }
 });
 
+//отрисовка всего приложения
 render(
   <App />,
   document.getElementById('root')
