@@ -97,16 +97,27 @@ var Add = React.createClass({
       yearIsEmpty: true
     };
   },
+
   //фокус на компоненте с именем thisInput при рендере
   componentDidMount: function() {
     this.nameInput.focus();
   },
 
+
   //обработчик добавления книги
   onBtnAddClickHandler: function(e) {
     e.preventDefault();
-    //получить значения из input, создать из них структуру, передать её в Library
+    //получить значения из input - создать геттер, создать из них структуру, передать её в Library
 
+    var author = this.props.data.author,
+        book = this.props.data.book,
+        year = this.props.data.year;
+
+        var item = [{
+          author: author,
+          book: book,
+          year: year
+        }];
   },
   
   //отмечаем, что чекбокс включен/выключен
