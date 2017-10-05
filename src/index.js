@@ -90,12 +90,18 @@ const Library = React.createClass({
 //добавление книг
 var Add = React.createClass({
   getInitialState: function() {
-    return { //add constructor 
+    return ({ //add constructor 
       agreeNotChecked: true,
       authorIsEmpty: true,
       bookIsEmpty: true,
-      yearIsEmpty: true
-    };
+      yearIsEmpty: true,
+
+      author:this.props.author,
+      book: this.props.book,
+      year:this.props.year,
+
+      onBtnAddClickHandler: this.onBtnAddClickHandler.bind(this)
+    });
   },
 
   //constructor+props
@@ -109,22 +115,11 @@ var Add = React.createClass({
   //обработчик добавления книги
   onBtnAddClickHandler: function(e) {
     e.preventDefault();
-    //получить значения из input, создать из них структуру, передать её в Library
-
-    var author = this.state.data.author.value,
-        book = this.state.data.book,
-        year = this.state.data.year;
-
-        var item = [{
-          author: author,
-          book: book,
-          year: year
-        }];
-
-        console.log('button was clicked');
-
-        
-        this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true});
+    //получить значения из input, передать их наверх родителю, родитель должен их отдать в Library
+    
+    this.props.onAdd(this.state.author, this.state.book,this.state.year);
+    
+    this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true});
   },
   
   //отмечаем, что чекбокс включен/выключен
@@ -140,17 +135,8 @@ var Add = React.createClass({
       this.setState({[id]:value, [id +'IsEmpty']:isEmpty});
   },
 
-  //динамическое переопределение, заполнено или пусто input
-  onFieldChange: function(fieldName, e) {
-    if (e.target.value.trim().length > 0) {
-      this.setState({[fieldName]:false})
-    } else {
-      this.setState({[fieldName]:true})
-    }
-  },
-
   render: function() {
-    var agreeNotChecked = this.state.agreeNotChecked,
+    const agreeNotChecked = this.state.agreeNotChecked,
         authorIsEmpty = this.state.authorIsEmpty,
         bookIsEmpty = this.state.bookIsEmpty,
         yearIsEmpty = this.state.yearIsEmpty;
@@ -161,7 +147,7 @@ var Add = React.createClass({
           type='text'
           className='add__author'
           id = 'author'
-          value={this.state.myValue} //state.author.value
+          value={this.state.author} 
           onChange={this.onChangeHandler}
           ref={(input) => { this.nameInput = input; }} // фокусируемся изначально на поле "Автор"
           placeholder='Имя автора'
@@ -170,7 +156,7 @@ var Add = React.createClass({
         <input
           className='add__book'
           id = 'book'
-          value={this.state.myValue}//state.book
+          value={this.state.book}
           onChange={this.onChangeHandler} 
           placeholder='Название книги'
         ></input>
@@ -178,7 +164,7 @@ var Add = React.createClass({
         <input
           className='add__year'
           id = 'year'
-          value={this.state.myValue}
+          value={this.state.year}
           onChange={this.onChangeHandler}
           placeholder='Год издания книги'
         ></input>
@@ -189,7 +175,7 @@ var Add = React.createClass({
 
         <button
           className='add__btn'
-          onClick={this.onBtnAddClickHandler.bind(this)} //->constructor для bind 
+          onClick={this.onBtnAddClickHandler}
           disabled={agreeNotChecked || authorIsEmpty || bookIsEmpty || yearIsEmpty}
           >
           Добавить книгу
@@ -206,11 +192,23 @@ const App = React.createClass({
       library: books
     };
   },
+
+  onAdd: function ({author,book,year }){
+    const Book={author,book,year};
+    const new_library=[];
+    Object.assign(new_library,this.state.library);
+
+    new_library.push(Book);
+    this.setState({library:new_library});
+    //this.setState({library:[...state.library,book]});
+  },
  
+
   render: function() {
+
     return (
       <div className='app'>
-        <Add />
+        <Add onAdd={this.onAdd}/>
         <h3>Библиотека</h3>
         <Library data={this.state.library} />
       </div>
