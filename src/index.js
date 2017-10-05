@@ -34,8 +34,13 @@ var Article = React.createClass({
   },
 
   onBtnDelClickHandler: function(e) {
-    e.preventDefault();//дописать - обработчик кнопки удаления книги из библиотеки
+    e.preventDefault();
     this.props.onDelete(this.props.index);
+  },
+
+  onBtnUpdClickHandler: function(e){
+    e.preventDefault();
+    this.props.onUpdate(this.state.author, this.state.book,this.state.year,this.props.index);
   },
 
   render: function() {
@@ -49,11 +54,17 @@ var Article = React.createClass({
         <p className='book__text'>{book}</p>
         <p className='book__year' >{year} </p>
        
-        <button className='del_btn'
+        <button className='del__btn'
           onClick={this.onBtnDelClickHandler}
           ref='del_button'
           >
          Удалить книгу </button>
+
+         <button className='update__btn'
+          onClick={this.onBtnUpdClickHandler}
+          ref='update_button'
+          >
+         Обновить книгу </button>
       </div>
     )
   }
@@ -73,7 +84,7 @@ const Library = React.createClass({
       libraryTemplate = data.map(function(item, index) {
         return (
           <div key={index} index={index}>
-            <Article data={item} onDelete={self.props.onDelete}/>
+            <Article data={item} onDelete={self.props.onDelete} onUpdate={self.props.onUpdate}/>
           </div>
         )
       })
@@ -211,13 +222,23 @@ const App = React.createClass({
     this.setState({library:new_library});
   },
 
+  onUpdate: function(author,book,year,updIndex)
+  {
+    const Book={author,book,year};
+    const new_library=[];
+    Object.assign(new_library,this.state.library);
+    new_library.splice(this.state.updIndex,1);//вырежем старый элемент
+    new.library.splice(this.state.updIndex, 0, Book);//добавим новый элемент
+    this.setState({library:new_library});
+  },
+
   render: function() {
 
     return (
       <div className='app'>
         <Add onAdd={this.onAdd}/>
         <h3>Библиотека</h3>
-        <Library data={this.state.library} onDelete={this.onDelete}/>
+        <Library data={this.state.library} onDelete={this.onDelete} onUpdate={this.onUpdate}/>
       </div>
     );
   }

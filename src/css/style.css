@@ -55,7 +55,7 @@ p {
   border-radius: 5px;
 }
 
-.del__btn {
+.update__btn, .del__btn {
   box-sizing: content-box;
   color: #FFF;
   text-transform: uppercase;
