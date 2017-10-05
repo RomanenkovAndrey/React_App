@@ -41,7 +41,7 @@ var Article = React.createClass({
     var author = this.props.data.author,
         book = this.props.data.book,
         year = this.props.data.year;
-
+   
     return (
       <div className='article'>
         <p className='book__author'>{author}:</p>
@@ -104,7 +104,6 @@ var Add = React.createClass({
     });
   },
 
-  //constructor+props
 
   //фокус на компоненте с именем thisInput при рендере
   componentDidMount: function() {
@@ -115,11 +114,12 @@ var Add = React.createClass({
   //обработчик добавления книги
   onBtnAddClickHandler: function(e) {
     e.preventDefault();
+   
     //получить значения из input, передать их наверх родителю, родитель должен их отдать в Library
     
     this.props.onAdd(this.state.author, this.state.book,this.state.year);
     
-    this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true});
+    this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true, author:'', book:'', year:''});
   },
   
   //отмечаем, что чекбокс включен/выключен
@@ -132,7 +132,7 @@ var Add = React.createClass({
       const id = e.target.id;
       const value = e.target.value;
       const isEmpty = (e.target.value.trim().length > 0);
-      this.setState({[id]:value, [id +'IsEmpty']:isEmpty});
+      this.setState({[id]:value, [id +'IsEmpty']:!isEmpty});
   },
 
   render: function() {
@@ -193,14 +193,12 @@ const App = React.createClass({
     };
   },
 
-  onAdd: function ({author,book,year }){
+  onAdd: function (author,book,year){
     const Book={author,book,year};
     const new_library=[];
     Object.assign(new_library,this.state.library);
-
-    new_library.push(Book);
+    new_library.unshift(Book);
     this.setState({library:new_library});
-    //this.setState({library:[...state.library,book]});
   },
  
 
