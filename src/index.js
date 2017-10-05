@@ -34,7 +34,8 @@ var Article = React.createClass({
   },
 
   onBtnDelClickHandler: function(e) {
-    e.preventDefault();//дописать - обработчик кнопки удаления книги
+    e.preventDefault();//дописать - обработчик кнопки удаления книги из библиотеки
+    this.props.onDelete(this.props.index);
   },
 
   render: function() {
@@ -66,12 +67,13 @@ const Library = React.createClass({
   render: function() {
     var data = this.props.data;
     var libraryTemplate;
+    var self=this;
 
     if (data.length > 0) {
       libraryTemplate = data.map(function(item, index) {
         return (
-          <div key={index}>
-            <Article data={item} />
+          <div key={index} index={index}>
+            <Article data={item} onDelete={self.props.onDelete}/>
           </div>
         )
       })
@@ -201,6 +203,13 @@ const App = React.createClass({
     this.setState({library:new_library});
   },
  
+  onDelete:function(delIndex)
+  {
+    const new_library=[];
+    Object.assign(new_library,this.state.library);
+    new_library.splice(this.state.delIndex,1); 
+    this.setState({library:new_library});
+  },
 
   render: function() {
 
@@ -208,7 +217,7 @@ const App = React.createClass({
       <div className='app'>
         <Add onAdd={this.onAdd}/>
         <h3>Библиотека</h3>
-        <Library data={this.state.library} />
+        <Library data={this.state.library} onDelete={this.onDelete}/>
       </div>
     );
   }
