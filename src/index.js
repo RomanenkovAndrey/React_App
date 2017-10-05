@@ -58,7 +58,7 @@ var Article = React.createClass({
   }
 });
 
-var Library = React.createClass({
+const Library = React.createClass({
   propTypes: {
     data: React.PropTypes.array.isRequired
   },
@@ -90,13 +90,15 @@ var Library = React.createClass({
 //добавление книг
 var Add = React.createClass({
   getInitialState: function() {
-    return {
+    return { //add constructor 
       agreeNotChecked: true,
       authorIsEmpty: true,
       bookIsEmpty: true,
       yearIsEmpty: true
     };
   },
+
+  //constructor+props
 
   //фокус на компоненте с именем thisInput при рендере
   componentDidMount: function() {
@@ -107,17 +109,22 @@ var Add = React.createClass({
   //обработчик добавления книги
   onBtnAddClickHandler: function(e) {
     e.preventDefault();
-    //получить значения из input - создать геттер, создать из них структуру, передать её в Library
+    //получить значения из input, создать из них структуру, передать её в Library
 
-    var author = this.props.data.author,
-        book = this.props.data.book,
-        year = this.props.data.year;
+    var author = this.state.data.author.value,
+        book = this.state.data.book,
+        year = this.state.data.year;
 
         var item = [{
           author: author,
           book: book,
           year: year
         }];
+
+        console.log('button was clicked');
+
+        
+        this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true});
   },
   
   //отмечаем, что чекбокс включен/выключен
@@ -125,12 +132,20 @@ var Add = React.createClass({
     this.setState({agreeNotChecked: !this.state.agreeNotChecked});
   },
 
-  //каждое из полей инпута заполнено и не состоит из одних только пробелов/переносов каретки, либо пусто
+  //это изменение состояния value в input и проверка на пустоту (для валидации кнопки)
+  onChangeHandler: function(e){
+      const id = e.target.id;
+      const value = e.target.value;
+      const isEmpty = (e.target.value.trim().length > 0);
+      this.setState({[id]:value, [id +'IsEmpty']:isEmpty});
+  },
+
+  //динамическое переопределение, заполнено или пусто input
   onFieldChange: function(fieldName, e) {
     if (e.target.value.trim().length > 0) {
-      this.setState({[''+fieldName]:false})
+      this.setState({[fieldName]:false})
     } else {
-      this.setState({[''+fieldName]:true})
+      this.setState({[fieldName]:true})
     }
   },
 
@@ -141,27 +156,30 @@ var Add = React.createClass({
         yearIsEmpty = this.state.yearIsEmpty;
 
     return (
-      <form className='add cf'>
+      <div className='add cf'>
         <input
           type='text'
           className='add__author'
-          value={this.state.myValue}
-          onChange={this.onFieldChange.bind(this, 'authorIsEmpty')}
+          id = 'author'
+          value={this.state.myValue} //state.author.value
+          onChange={this.onChangeHandler}
           ref={(input) => { this.nameInput = input; }} // фокусируемся изначально на поле "Автор"
           placeholder='Имя автора'
         />
 
         <input
           className='add__book'
-          value={this.state.myValue}
-          onChange={this.onFieldChange.bind(this, 'bookIsEmpty')}
+          id = 'book'
+          value={this.state.myValue}//state.book
+          onChange={this.onChangeHandler} 
           placeholder='Название книги'
         ></input>
 
         <input
           className='add__year'
+          id = 'year'
           value={this.state.myValue}
-          onChange={this.onFieldChange.bind(this, 'yearIsEmpty')}
+          onChange={this.onChangeHandler}
           placeholder='Год издания книги'
         ></input>
 
@@ -171,18 +189,18 @@ var Add = React.createClass({
 
         <button
           className='add__btn'
-          onClick={this.onBtnAddClickHandler}
+          onClick={this.onBtnAddClickHandler.bind(this)} //->constructor для bind 
           disabled={agreeNotChecked || authorIsEmpty || bookIsEmpty || yearIsEmpty}
           >
           Добавить книгу
         </button>
-      </form>
+      </div>
     );
   }
 });
 
 //само приложение
-var App = React.createClass({
+const App = React.createClass({
   getInitialState: function() {
     return {
       library: books
