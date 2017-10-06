@@ -47,7 +47,7 @@ const App = React.createClass({
         return tempItem;
       });
   
-      this.setState({library:newLibrary});
+      this.setState({library:newLibrary,articleEdit:null});
     },
   
     render: function() {

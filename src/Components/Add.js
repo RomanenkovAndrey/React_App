@@ -29,12 +29,17 @@ var Add = React.createClass({
         });
     },
   
+    componentDidUpdate: function(prevProps, nextProps){
+        if(prevProps.articleEdit!=null)
+          ;
+    },
+
     //обработчик добавления книги
     onBtnAddClickHandler: function(e) {
       e.preventDefault();
      
       this.props.onAdd(this.state.author, this.state.book,this.state.year);
-      
+
       this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true, author:'', book:'', year:''});
     },
     
@@ -43,6 +48,7 @@ var Add = React.createClass({
   
         this.props.onUpdate(this.state.author, this.state.book, this.state.year, this.state.index);
   
+        
         this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true, author:'', book:'', year:''});
     },
   
@@ -78,6 +84,7 @@ var Add = React.createClass({
           />
   
           <input
+            type='text'
             className='add__book'
             id = 'book'
             value={this.state.book}
@@ -86,6 +93,7 @@ var Add = React.createClass({
           ></input>
   
           <input
+            type='text'
             className='add__year'
             id = 'year'
             value={this.state.year}
