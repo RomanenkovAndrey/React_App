@@ -47,7 +47,7 @@ p {
   border: none;
   font-size: 12px;
 }
-.add__btn {
+.add__btn, .upd__btn {
   box-sizing: content-box;
   color: #FFF;
   text-transform: uppercase;
@@ -55,7 +55,7 @@ p {
   border-radius: 5px;
 }
 
-.update__btn, .del__btn {
+.del__btn {
   box-sizing: content-box;
   color: #FFF;
   text-transform: uppercase;
