@@ -16,22 +16,17 @@ var Add = React.createClass({
     },
   
     componentWillReceiveProps: function(nextProps) {
-       if ( nextProps.articleEdit )
-        this.setState({
+       if ( nextProps.articleEdit ) //если получили элемент для редактирования
+        this.setState({ //его данные запишутся в форму добавления
           author: nextProps.articleEdit.author,
           book: nextProps.articleEdit.book,
           year: nextProps.articleEdit.year,
           index: nextProps.articleEdit.index,
   
-          authorIsEmpty: false,
+          authorIsEmpty: false, //форма теперь будет непустой
           bookIsEmpty: false,
           yearIsEmpty: false
         });
-    },
-  
-    componentDidUpdate: function(prevProps, nextProps){
-        if(prevProps.articleEdit!=null)
-          ;
     },
 
     //обработчик добавления книги
@@ -40,19 +35,21 @@ var Add = React.createClass({
      
       this.props.onAdd(this.state.author, this.state.book,this.state.year);
 
-      this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true, author:'', book:'', year:''});
+      this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
+        agreeNotChecked:true, author:'', book:'', year:''});
     },
     
+    //обработчик редактирования книги
     onBtnUpdClickHandler: function(e){
         e.preventDefault();
   
         this.props.onUpdate(this.state.author, this.state.book, this.state.year, this.state.index);
-  
         
-        this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true, author:'', book:'', year:''});
+        this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
+          agreeNotChecked:true, author:'', book:'', year:''});
     },
   
-    //отмечаем, что чекбокс включен/выключен
+    //при нажатии на чекбокс на нём появляется/исчезает "галочка"
     onCheckRuleClick: function() {
       this.setState({agreeNotChecked: !this.state.agreeNotChecked});
     },
@@ -61,15 +58,15 @@ var Add = React.createClass({
     onChangeHandler: function(e){
         const id = e.target.id;
         const value = e.target.value;
-        const isEmpty = (e.target.value.trim().length > 0);
+        const isEmpty = (e.target.value.trim().length > 0); //правильное название - notIsEmpty
         this.setState({[id]:value, [id +'IsEmpty']:!isEmpty});
     },
   
     render: function() {
-      const agreeNotChecked = this.state.agreeNotChecked,
-          authorIsEmpty = this.state.authorIsEmpty,
-          bookIsEmpty = this.state.bookIsEmpty,
-          yearIsEmpty = this.state.yearIsEmpty;
+
+    //валидация кнопок "добавить" и "редактировать"
+      const notAllChecked = (this.state.agreeNotChecked || this.state.authorIsEmpty || 
+        this.state.bookIsEmpty || this.state.yearIsEmpty)?true:false;
   
       return (
         <div className='add cf'>
@@ -102,15 +99,16 @@ var Add = React.createClass({
           ></input>
   
           <label className='add__checkrule'>
-            <input type='checkbox' onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
+            <input type='checkbox' checked = {!this.state.agreeNotChecked} //checked и agreeNotChecked противоположны
+            onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
           </label>
   
       {
         !this.props.articleEdit && (
           <button
-            className='add__btn'
-            onClick= {this.onBtnAddClickHandler}
-            disabled = {agreeNotChecked || authorIsEmpty || bookIsEmpty || yearIsEmpty}
+            className ='add__btn'
+            onClick = {this.onBtnAddClickHandler}
+            disabled = {notAllChecked}
             >
             Добавить книгу
           </button>)
@@ -121,7 +119,7 @@ var Add = React.createClass({
           <button
             className ='upd__btn'
             onClick = {this.onBtnUpdClickHandler}
-            disabled = {agreeNotChecked || authorIsEmpty || bookIsEmpty || yearIsEmpty}
+            disabled = {notAllChecked}
             >
             Редактировать книгу
           </button>)

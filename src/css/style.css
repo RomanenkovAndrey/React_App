@@ -3,7 +3,7 @@
 }
 
 body {
-  background: #37BFC2;
+  background: #C4D9DA;
   font-family: sans-serif;
 }
 
@@ -24,7 +24,7 @@ p {
 
 .book__author {
   text-decoration: underline;
-  color: #007DDC;
+  color: #1D61DF;
 }
 
 .add {
@@ -51,7 +51,7 @@ p {
   box-sizing: content-box;
   color: #FFF;
   text-transform: uppercase;
-  background: #007DDC;
+  background: #10E63E;
   border-radius: 5px;
 }
 
@@ -59,9 +59,10 @@ p {
   box-sizing: content-box;
   color: #FFF;
   text-transform: uppercase;
-  background: #007DDC;
+  background: #DA2114;
   border-radius: 5px;
   margin: 0 auto;
+  margin-right: 15px;
 }
 
 .add__btn:disabled {
