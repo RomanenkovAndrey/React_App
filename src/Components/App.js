@@ -11,52 +11,25 @@ const App = React.createClass({
       };
     },
   
-    onAdd: function (author,book,year){
-      const Book={author,book,year};
-      const newLibrary=[];
-      Object.assign(newLibrary,this.state.library);
-      newLibrary.unshift(Book);
-      this.setState({library:newLibrary});
-    },
-   
-    onDelete:function(delIndex)
-    {
-      const newLibrary=[];
-      Object.assign(newLibrary,this.state.library);
-      newLibrary.splice(delIndex,1); 
-      this.setState({library:newLibrary});
-    },
-  
-    onSave: function(updIndex){
+    //Теперь сохранение данных не нужно вообще
+   /* onSave: function(updIndex){
         var newState = Object.assign (this.state);
         newState.articleEdit = this.state.library[updIndex];
         newState.articleEdit.index = updIndex;
        
         this.setState(newState);
-    },
-  
-    onUpdate: function(author,book,year,updIndex) {
-      const newLibrary= this.state.library.map(function(item) {
-        var tempItem = item;
-        if (tempItem.index===updIndex) {
-          tempItem.author = author;
-          tempItem.book = book;
-          tempItem.year = year;
-        }
-  
-        return tempItem;
-      });
-  
-      this.setState({library:newLibrary,articleEdit:null});
-    },
+    },*/
   
     render: function() {
   
+      // onAdd={this.onAdd} onUpdate={this.onUpdate} articleEdit={this.state.articleEdit} для Add
+      // data={this.state.library} onDelete={this.onDelete} onSave={this.onSave} для Library
+
       return (
         <div className='app'>
-          <Add onAdd={this.onAdd} onUpdate={this.onUpdate} articleEdit={this.state.articleEdit}/>
+          <Add/>
           <h3>Библиотека</h3>
-          <Library data={this.state.library} onDelete={this.onDelete} onSave={this.onSave}/>
+          <Library/>
         </div>
       );
     }
@@ -64,7 +37,7 @@ const App = React.createClass({
 
 
 //Некоторый начальный набор книг в библиотеке
-var books = [
+/*var books = [
     {
       author: 'Замятин',
       book: 'Мы',
@@ -80,6 +53,4 @@ var books = [
       book: 'Бойцовский клуб',
       year:'2006'
     }
-  ];
-
-  export default App;
+  ];*/

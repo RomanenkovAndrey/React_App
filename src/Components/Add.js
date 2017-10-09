@@ -15,9 +15,10 @@ var Add = React.createClass({
       });
     },
   
+    // Нам теперь не нужно передавать ArticleEdit
     componentWillReceiveProps: function(nextProps) {
-       if ( nextProps.articleEdit ) //если получили элемент для редактирования
-        this.setState({ //его данные запишутся в форму добавления
+       if ( nextProps.articleEdit ) 
+        this.setState({ 
           author: nextProps.articleEdit.author,
           book: nextProps.articleEdit.book,
           year: nextProps.articleEdit.year,
@@ -33,7 +34,7 @@ var Add = React.createClass({
     onBtnAddClickHandler: function(e) {
       e.preventDefault();
      
-      this.props.onAdd(this.state.author, this.state.book,this.state.year);
+      this.props.onAdd(this.state.author, this.state.book, this.state.year);
 
       this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
         agreeNotChecked:true, author:'', book:'', year:''});
@@ -49,6 +50,29 @@ var Add = React.createClass({
           agreeNotChecked:true, author:'', book:'', year:''});
     },
   
+    onAdd: function (author,book,year){
+      const Book = {author,book,year};
+      const newLibrary=[];
+      Object.assign(newLibrary,this.state.library);
+      newLibrary.unshift(Book);
+      this.setState({library:newLibrary});
+    },
+
+    onUpdate: function(author,book,year,updIndex) {
+      const newLibrary= this.state.library.map(function(item) {
+        var tempItem = item;
+        if (tempItem.index===updIndex) {
+          tempItem.author = author;
+          tempItem.book = book;
+          tempItem.year = year;
+        }
+  
+        return tempItem;
+      });
+  
+      this.setState({library:newLibrary,articleEdit:null});
+    },
+
     //при нажатии на чекбокс на нём появляется/исчезает "галочка"
     onCheckRuleClick: function() {
       this.setState({agreeNotChecked: !this.state.agreeNotChecked});

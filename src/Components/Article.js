@@ -10,20 +10,28 @@ var Article = React.createClass({
       }) 
     },
   
+    onDelete:function(delIndex)
+    {
+      const newLibrary=[];
+      Object.assign(newLibrary,this.state.library);
+      newLibrary.splice(delIndex,1); 
+      this.setState({library:newLibrary});
+    },
+
     onBtnDelClickHandler: function(e) {
       e.preventDefault();
       this.props.onDelete(this.props.index);
     },
   
-    onElemUpdClickHandler: function(e){
+    //Больше не сохраняем данные элемента
+    /*onElemUpdClickHandler: function(e){
       e.preventDefault();
       this.props.onSave(this.props.index);
-    },
+    },*/
   
     render: function() {
-      var author = this.props.data.author,
-          book = this.props.data.book,
-          year = this.props.data.year;
+
+      const {author, book, year} = this.props.item;
      
       return (
         <div className='article'>
@@ -46,4 +54,17 @@ var Article = React.createClass({
     }
   });
 
-  export default Article;
+
+  function mapStateToProps (state) {
+    return {
+      data:state
+    }
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      libraryActions: bindActionCreators(libraryActions, dispatch)
+    }
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Article);

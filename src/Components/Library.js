@@ -1,5 +1,8 @@
 import React from 'react'
 import Article from './Article.js'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as libraryActions from '../actions/LibraryActions'
 
 // библиотека книг
 const Library = React.createClass({
@@ -8,15 +11,16 @@ const Library = React.createClass({
     },
   
     render: function() {
-      var data = this.props.data;
+      const {data} = this.props.data;
       var libraryTemplate;
-      var that=this;
+      var that = this;
   
       if (data.length > 0) {
         libraryTemplate = data.map(function(item, index) {
           return (
-            <div key={index}>
-              <Article data={item} onDelete={that.props.onDelete} onSave={that.props.onSave} index={index}/>
+            <div key = {index}>
+              {/*data={item} onDelete={that.props.onDelete} onSave={that.props.onSave} index={index}*/}
+              <Article item = {item} index = {index}/>
             </div>
           )
         })
@@ -32,4 +36,16 @@ const Library = React.createClass({
     }
   });
 
-  export default Library;
+  function mapStateToProps (state) {
+    return {
+      data:state
+    }
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      libraryActions: bindActionCreators(libraryActions, dispatch)
+    }
+  }
+
+  export default connect(mapStateToProps,mapDispatchToProps )(Library);
