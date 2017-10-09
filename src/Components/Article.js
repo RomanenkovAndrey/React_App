@@ -10,25 +10,17 @@ var Article = React.createClass({
       }) 
     },
   
-    onDelete:function(delIndex)
-    {
-      const newLibrary=[];
-      Object.assign(newLibrary,this.state.library);
-      newLibrary.splice(delIndex,1); 
-      this.setState({library:newLibrary});
-    },
+    onElemUpdClickHandler: function(e){
+      e.preventDefault();
+      this.props.saveBook(this.props.index);
+    }
+  
 
     onBtnDelClickHandler: function(e) {
       e.preventDefault();
-      this.props.onDelete(this.props.index);
+      this.props.deleteBook(this.props.index);
     },
-  
-    //Больше не сохраняем данные элемента
-    /*onElemUpdClickHandler: function(e){
-      e.preventDefault();
-      this.props.onSave(this.props.index);
-    },*/
-  
+
     render: function() {
 
       const {author, book, year} = this.props.item;

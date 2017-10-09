@@ -24,7 +24,8 @@ const Library = React.createClass({
             </div>
           )
         })
-      } else {
+      }
+       else {
         libraryTemplate = <p>Ни одна книга ещё не добавлена</p>
       }
   

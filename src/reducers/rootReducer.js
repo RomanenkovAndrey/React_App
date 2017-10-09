@@ -19,14 +19,49 @@ const initialState = {
   export default function libraryState(state = initialState, action) {
 
     switch(action.type){
+
       case 'ADD_BOOK':{
-        return {...state, book_add:action.payload} ; break;
+        const newState  = Object.assign({},state);
+        var arr = [].concat(newState.data); //должны скопировать массив
+        arr.unshift (action.payload);
+        newState.data = arr;
+        return newState;
+        break;
       }
+
       case 'DELETE_BOOK':{
-        return {...state, book_del:action.payload} ; break;
+        const newState  = Object.assign({},state);
+        var arr = [].concat(newState.data);
+        arr.splice(action.payload, 1); //удаляем один элемент с позиции delIndex
+        newState.data = arr;
+        return newState;
+        break;
       }
+
+      case 'SAVE_BOOK':{
+        const newState = Object.assign ({},state); 
+        newState.articleEdit = state.data[updIndex]; //запоминаем книгу, которую будем редактировать
+        newState.articleEdit.index = updIndex;
+        return newState;
+      }
+
       case 'UPDATE_BOOK':{
-        return {...state, book_upd:action.payload} ; break;
+        const newState  = Object.assign({},state);
+        var arr = [].concat(newState.data);
+
+        newState = arr.map(function(item){
+          var tempItem = item;
+          if (tempItem.index===updIndex) { //редактируем нужную книгу
+            tempItem.author = author;
+            tempItem.book = book;
+            tempItem.year = year;
+          }
+          return tempItem;
+        });
+
+        newState.articleEdit = null;
+        return newState;
+        break;
       }
 
     default:

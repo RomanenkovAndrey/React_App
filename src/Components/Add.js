@@ -34,7 +34,7 @@ var Add = React.createClass({
     onBtnAddClickHandler: function(e) {
       e.preventDefault();
      
-      this.props.onAdd(this.state.author, this.state.book, this.state.year);
+      this.props.addBook(this.state.author, this.state.book, this.state.year); 
 
       this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
         agreeNotChecked:true, author:'', book:'', year:''});
@@ -44,33 +44,10 @@ var Add = React.createClass({
     onBtnUpdClickHandler: function(e){
         e.preventDefault();
   
-        this.props.onUpdate(this.state.author, this.state.book, this.state.year, this.state.index);
+        this.props.updateBook(this.state.author, this.state.book, this.state.year, this.state.index);
         
         this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
           agreeNotChecked:true, author:'', book:'', year:''});
-    },
-  
-    onAdd: function (author,book,year){
-      const Book = {author,book,year};
-      const newLibrary=[];
-      Object.assign(newLibrary,this.state.library);
-      newLibrary.unshift(Book);
-      this.setState({library:newLibrary});
-    },
-
-    onUpdate: function(author,book,year,updIndex) {
-      const newLibrary= this.state.library.map(function(item) {
-        var tempItem = item;
-        if (tempItem.index===updIndex) {
-          tempItem.author = author;
-          tempItem.book = book;
-          tempItem.year = year;
-        }
-  
-        return tempItem;
-      });
-  
-      this.setState({library:newLibrary,articleEdit:null});
     },
 
     //при нажатии на чекбокс на нём появляется/исчезает "галочка"
