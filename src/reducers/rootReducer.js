@@ -20,38 +20,34 @@ const initialState = {
 
     switch(action.type){
 
-      case 'ADD_BOOK':{
+      case 'ADD_BOOK':
         const newState  = Object.assign({},state);
         var arr = [].concat(newState.data); //должны скопировать массив
         arr.unshift (action.payload);
         newState.data = arr;
         return newState;
-        break;
-      }
 
-      case 'DELETE_BOOK':{
+      case 'DELETE_BOOK':
         const newState  = Object.assign({},state);
-        var arr = [].concat(newState.data);
-        arr.splice(action.payload, 1); //удаляем один элемент с позиции delIndex
-        newState.data = arr;
+        var arr2 = [].concat(newState.data);
+        arr2.splice(action.payload, 1); //удаляем один элемент с позиции delIndex
+        newState.data = arr2;
         return newState;
-        break;
-      }
 
-      case 'SAVE_BOOK':{
+      case 'SAVE_BOOK':
         const newState = Object.assign ({},state); 
-        newState.articleEdit = state.data[updIndex]; //запоминаем книгу, которую будем редактировать
+        var obj = Object.assign ({},state.data[updIndex] );
+        newState.articleEdit = obj; //запоминаем книгу, которую будем редактировать
         newState.articleEdit.index = updIndex;
         return newState;
-      }
 
-      case 'UPDATE_BOOK':{
+      case 'UPDATE_BOOK':
         const newState  = Object.assign({},state);
-        var arr = [].concat(newState.data);
+        var arr3 = [].concat(newState.data);
 
-        newState = arr.map(function(item){
+        newState.data = arr3.map(function(item){
           var tempItem = item;
-          if (tempItem.index===updIndex) { //редактируем нужную книгу
+          if (tempItem.index === updIndex) { //редактируем нужную книгу
             tempItem.author = author;
             tempItem.book = book;
             tempItem.year = year;
@@ -61,8 +57,6 @@ const initialState = {
 
         newState.articleEdit = null;
         return newState;
-        break;
-      }
 
     default:
       return state;

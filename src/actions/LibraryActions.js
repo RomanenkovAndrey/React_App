@@ -7,7 +7,7 @@ export function addBook(author,book,year) {
 
 export function deleteBook(delIndex){
     return{
-        type: 'DEL_BOOK',
+        type: 'DELETE_BOOK',
         payload: delIndex
     }
 }
@@ -21,7 +21,7 @@ export function saveBook(updIndex){
 
 export function updateBook(author,book,year,updIndex){
     return{
-        type: 'UPD_BOOK',
+        type: 'UPDATE_BOOK',
         payload: {author,book,year,updIndex}
     }
 }

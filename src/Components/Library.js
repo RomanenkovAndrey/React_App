@@ -11,9 +11,8 @@ const Library = React.createClass({
     },
   
     render: function() {
-      const {data} = this.props.data;
+      const data = this.props.data;
       var libraryTemplate;
-      var that = this;
   
       if (data.length > 0) {
         libraryTemplate = data.map(function(item, index) {
@@ -39,8 +38,8 @@ const Library = React.createClass({
 
   function mapStateToProps (state) {
     return {
-      data:state
-    }
+      data: state.data
+    };
   }
   
   function mapDispatchToProps(dispatch) {
@@ -49,4 +48,4 @@ const Library = React.createClass({
     }
   }
 
-  export default connect(mapStateToProps,mapDispatchToProps )(Library);
+  export default connect(mapStateToProps,mapDispatchToProps)(Library);

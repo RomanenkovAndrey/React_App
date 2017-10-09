@@ -75,8 +75,8 @@ var Add = React.createClass({
             type='text'
             className='add__author'
             id = 'author'
-            value={this.state.author} 
-            onChange={this.onChangeHandler}
+            value = {this.state.author} 
+            onChange = {this.onChangeHandler}
             placeholder='Имя автора'
             autoFocus
           />
@@ -85,8 +85,8 @@ var Add = React.createClass({
             type='text'
             className='add__book'
             id = 'book'
-            value={this.state.book}
-            onChange={this.onChangeHandler} 
+            value = {this.state.book}
+            onChange = {this.onChangeHandler} 
             placeholder='Название книги'
           ></input>
   
@@ -94,7 +94,7 @@ var Add = React.createClass({
             type='text'
             className='add__year'
             id = 'year'
-            value={this.state.year}
+            value = {this.state.year}
             onChange = {this.onChangeHandler}
             placeholder = 'Год издания книги'
           ></input>
