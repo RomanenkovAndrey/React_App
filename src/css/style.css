@@ -47,7 +47,15 @@ p {
   border: none;
   font-size: 12px;
 }
-.add__btn, .upd__btn {
+
+.add__btn {
+  box-sizing: content-box;
+  color: #FFF;
+  text-transform: uppercase;
+  background: #2FDEF5;
+  border-radius: 5px
+}
+.upd__btn {
   box-sizing: content-box;
   color: #FFF;
   text-transform: uppercase;

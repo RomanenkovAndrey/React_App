@@ -10,7 +10,7 @@ const store = configureStore();
 
 //отрисовка всего приложения
 render(
-  <Provider store={store}>
+  <Provider store = {store}>
     <div className ='app'>
       <App />
     </div>

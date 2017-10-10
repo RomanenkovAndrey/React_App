@@ -1,5 +1,7 @@
 import React from 'react'
 import * as libraryActions from '../actions/LibraryActions'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 //формирование списка книг - по одной
 var Article = React.createClass({
@@ -13,17 +15,17 @@ var Article = React.createClass({
   
     onElemUpdClickHandler: function(e){
       e.preventDefault();
-      this.props.saveBook(this.props.index);
+      this.props.libraryActions.saveBook(this.props.index);
     },
   
 
     onBtnDelClickHandler: function(e) {
       e.preventDefault();
-      this.props.deleteBook(this.props.index);
+      this.props.libraryActions.deleteBook(this.props.index);
     },
 
     render: function() {
-
+      console.log(this.props.item);
       const { author, book, year } = this.props.item;
      
       return (
@@ -46,5 +48,18 @@ var Article = React.createClass({
       );
     }
   });
+
+  function mapStateToProps (state) {
+    return {
+      data: state.data // неужели без этого он здесь не увидит, что item из data? Добавил это, и заработала функция редактирования книг
+    };
+  }
   
-  export default Article;
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      libraryActions: bindActionCreators(libraryActions, dispatch)
+    }
+  }
+
+  export default connect(mapStateToProps,mapDispatchToProps)(Article);

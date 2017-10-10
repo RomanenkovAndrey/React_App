@@ -1,4 +1,7 @@
 import React from 'react'
+import * as libraryActions from '../actions/LibraryActions'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 //добавление и редактирование книг
 var Add = React.createClass({
@@ -15,7 +18,7 @@ var Add = React.createClass({
       });
     },
   
-    // Нам теперь не нужно передавать ArticleEdit
+    // Нам теперь нужно иначе передавать ArticleEdit!
     componentWillReceiveProps: function(nextProps) {
        if ( nextProps.articleEdit ) 
         this.setState({ 
@@ -34,7 +37,7 @@ var Add = React.createClass({
     onBtnAddClickHandler: function(e) {
       e.preventDefault();
      
-      this.props.addBook(this.state.author, this.state.book, this.state.year); 
+      this.props.libraryActions.addBook(this.state.author, this.state.book, this.state.year); 
 
       this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
         agreeNotChecked:true, author:'', book:'', year:''});
@@ -44,7 +47,7 @@ var Add = React.createClass({
     onBtnUpdClickHandler: function(e){
         e.preventDefault();
   
-        this.props.updateBook(this.state.author, this.state.book, this.state.year, this.state.index);
+        this.props.libraryActions.updateBook(this.state.author, this.state.book, this.state.year, this.state.index);
         
         this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
           agreeNotChecked:true, author:'', book:'', year:''});
@@ -130,5 +133,17 @@ var Add = React.createClass({
       );
     }
   });
+  
+  function mapStateToProps (state) {
+    return {
+      articleEdit: state.articleEdit
+    };
+  }
 
-  export default Add;
+  function mapDispatchToProps(dispatch) {
+    return {
+      libraryActions: bindActionCreators(libraryActions, dispatch)
+    }
+  }
+
+  export default connect(mapStateToProps,mapDispatchToProps)(Add);
