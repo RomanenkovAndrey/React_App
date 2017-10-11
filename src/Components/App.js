@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Add from './Add.js'
 import Library from './Library.js'
 
+
+export default class App extends Component{
+    constructor(props)
+    {
+      super(props);//?
+      this.state = {articleEdit: null}; //унаследовались от компоненты, появилось поле state
+    }
+
+  render(){
+    return (
+      <div className='app'>
+        <Add/>
+        <h3>Библиотека</h3>
+        <Library/>
+      </div>
+    )
+  }
+}
+
+/*
 const App = React.createClass({
     getInitialState: function() {
       return {
@@ -10,9 +30,6 @@ const App = React.createClass({
     },
   
     render: function() {
-  
-      // onAdd={this.onAdd} onUpdate={this.onUpdate} articleEdit={this.state.articleEdit} для Add
-      // data={this.state.library} onDelete={this.onDelete} onSave={this.onSave} для Library
 
       return (
         <div className='app'>
@@ -24,4 +41,4 @@ const App = React.createClass({
     }
   });
 
-  export default App;
+  export default App;*/

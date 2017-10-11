@@ -70,7 +70,7 @@ var Add = React.createClass({
 
     //валидация кнопок "добавить" и "редактировать"
       const notAllChecked = (this.state.agreeNotChecked || this.state.authorIsEmpty || 
-        this.state.bookIsEmpty || this.state.yearIsEmpty)?true:false;
+        this.state.bookIsEmpty || this.state.yearIsEmpty)?true:false; 
   
       return (
         <div className='add cf'>

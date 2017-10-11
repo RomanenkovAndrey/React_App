@@ -24,7 +24,7 @@ const initialState = {
 
       case 'ADD_BOOK':{
         const newState  = Object.assign({},state);
-        var arr = [].concat(newState.data); //должны скопировать массив
+        let arr = [].concat(newState.data); //должны скопировать массив
         arr.unshift (action.payload);
         newState.data = arr;
         return newState;
@@ -32,15 +32,15 @@ const initialState = {
 
       case 'DELETE_BOOK':{
         const newState  = Object.assign({},state);
-        var arr2 = [].concat(newState.data);
-        arr2.splice(action.payload, 1); //удаляем один элемент с позиции delIndex
-        newState.data = arr2;
+        let arr = [].concat(newState.data);
+        arr.splice(action.payload, 1); //удаляем один элемент с позиции delIndex
+        newState.data = arr;
         return newState;
       }
 
       case 'SAVE_BOOK':{
         const newState = Object.assign({},state); 
-        var obj = Object.assign({},state.data[action.payload]);
+        let obj = Object.assign({},state.data[action.payload]);
         //нужно скопировать obj в articleEdit
         newState.articleEdit = obj; //запоминаем книгу, которую будем редактировать
         newState.articleEdit.index = action.payload;
@@ -49,14 +49,12 @@ const initialState = {
 
       case 'UPDATE_BOOK':{
         const newState  = Object.assign({},state);
-        var arr3 = [].concat(newState.data);
-        var counter = 0; //для того, чтобы когда совпадёт индекс нужной книги, заменить его
-        newState.data = arr3.map(function(item){
+        let arr = [].concat(newState.data);
+        let counter = 0; //для того, чтобы когда совпадёт индекс нужной книги, заменить его
+        newState.data = arr.map(function(item){
           var tempItem = item;
-          if (counter == action.payload.updIndex) { //редактируем нужную книгу
-            tempItem.author = action.payload.author;
-            tempItem.book = action.payload.book;
-            tempItem.year = action.payload.year;
+          if (counter === action.payload.updIndex) { //редактируем нужную книгу
+            tempItem = action.payload;
           }
           counter++;
           return tempItem;
