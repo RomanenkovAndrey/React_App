@@ -19,8 +19,7 @@ class Library extends Component{
           </div>
         )
       })
-    }
-     else {
+    } else {
       libraryTemplate = <p>Ни одна книга ещё не добавлена</p>
     }
 

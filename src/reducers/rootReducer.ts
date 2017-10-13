@@ -1,4 +1,21 @@
-const initialState = {
+interface iBook{
+    author: string,
+    book: string, 
+    year: string
+}
+
+interface iData{
+  data: iBook[],
+
+  articleEdit: {
+    author: string, 
+    book: string, 
+    year: string, 
+    index: number
+  }
+}
+
+const initialState: iData = {
     data:[{
       author: 'Замятин',
       book: 'Мы',

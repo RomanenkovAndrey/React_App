@@ -25,7 +25,7 @@ class Add extends Component{
       };
     }
 
-    componentWillReceiveProps = (nextProps:any) =>{
+    componentWillReceiveProps = (nextProps:any) => {
        if ( nextProps.articleEdit ) 
         this.setState({ 
           author: nextProps.articleEdit.author,
@@ -40,7 +40,7 @@ class Add extends Component{
     };
 
     //обработчик добавления книги
-    onBtnAddClickHandler = (e)=> {
+    onBtnAddClickHandler = (e:any)=> {
       e.preventDefault();
      
       const {author, book, year} = this.state; //как вынести в глобальную область
@@ -52,7 +52,7 @@ class Add extends Component{
     }
     
     //обработчик редактирования книги
-    onButtonUpdateClickHandler = (e) =>{
+    onButtonUpdateClickHandler = (e:any) =>{
         e.preventDefault();
 
         const {author, book, year, index} = this.state;
@@ -69,7 +69,7 @@ class Add extends Component{
     }
   
     //это изменение состояния value в input и проверка на пустоту (для валидации кнопки)
-    onChangeHandler = (e) =>{
+    onChangeHandler = (e:any) =>{
         const id = e.target.id;
         const value = e.target.value;
         const isEmpty = (e.target.value.trim().length > 0); //правильное название - notIsEmpty
