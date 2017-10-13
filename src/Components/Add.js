@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { Component } from 'react'
 import * as libraryActions from '../actions/LibraryActions'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 //добавление и редактирование книг
-var Add = React.createClass({
-    getInitialState: function() {
-      return ({ //add constructor 
+class Add extends Component{
+
+    constructor(props){
+      super(props);
+      this.state = {
         agreeNotChecked: true,
         authorIsEmpty: true,
         bookIsEmpty: true,
@@ -15,11 +17,10 @@ var Add = React.createClass({
         author:'',
         book: '',
         year:''
-      });
-    },
+      };
+    }
   
-    // Нам теперь нужно иначе передавать ArticleEdit!
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps = (nextProps) =>{
        if ( nextProps.articleEdit ) 
         this.setState({ 
           author: nextProps.articleEdit.author,
@@ -27,50 +28,60 @@ var Add = React.createClass({
           year: nextProps.articleEdit.year,
           index: nextProps.articleEdit.index,
   
-          authorIsEmpty: false, //форма теперь будет непустой
+          authorIsEmpty: false, 
           bookIsEmpty: false,
           yearIsEmpty: false
         });
-    },
+    }
 
     //обработчик добавления книги
-    onBtnAddClickHandler: function(e) {
+    onBtnAddClickHandler = (e)=> {
       e.preventDefault();
      
       this.props.libraryActions.addBook(this.state.author, this.state.book, this.state.year); 
 
-      this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
-        agreeNotChecked:true, author:'', book:'', year:''});
-    },
+      this.setState(
+        {
+          authorIsEmpty:true,
+          bookIsEmpty:true,
+          yearIsEmpty:true,
+          agreeNotChecked:true,
+          author:'',
+          book:'', 
+          year:''
+        });
+    }
     
     //обработчик редактирования книги
-    onBtnUpdClickHandler: function(e){
+    onBtnUpdClickHandler = (e) =>{
         e.preventDefault();
   
         this.props.libraryActions.updateBook(this.state.author, this.state.book, this.state.year, this.state.index);
         
         this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
           agreeNotChecked:true, author:'', book:'', year:''});
-    },
+    }
 
     //при нажатии на чекбокс на нём появляется/исчезает "галочка"
-    onCheckRuleClick: function() {
+    onCheckRuleClick= ()=> {
       this.setState({agreeNotChecked: !this.state.agreeNotChecked});
-    },
+    }
   
     //это изменение состояния value в input и проверка на пустоту (для валидации кнопки)
-    onChangeHandler: function(e){
+    onChangeHandler = (e) =>{
         const id = e.target.id;
         const value = e.target.value;
         const isEmpty = (e.target.value.trim().length > 0); //правильное название - notIsEmpty
         this.setState({[id]:value, [id +'IsEmpty']:!isEmpty});
-    },
+    }
   
-    render: function() {
+    render() {
 
     //валидация кнопок "добавить" и "редактировать"
       const notAllChecked = (this.state.agreeNotChecked || this.state.authorIsEmpty || 
-        this.state.bookIsEmpty || this.state.yearIsEmpty)?true:false; 
+        this.state.bookIsEmpty || this.state.yearIsEmpty); 
+        
+      const {author, book, year} =this.state;
   
       return (
         <div className='add cf'>
@@ -78,7 +89,7 @@ var Add = React.createClass({
             type='text'
             className='add__author'
             id = 'author'
-            value = {this.state.author} 
+            value = {author} 
             onChange = {this.onChangeHandler}
             placeholder='Имя автора'
             autoFocus
@@ -88,7 +99,7 @@ var Add = React.createClass({
             type='text'
             className='add__book'
             id = 'book'
-            value = {this.state.book}
+            value = {book}
             onChange = {this.onChangeHandler} 
             placeholder='Название книги'
           ></input>
@@ -97,7 +108,7 @@ var Add = React.createClass({
             type='text'
             className='add__year'
             id = 'year'
-            value = {this.state.year}
+            value = {year}
             onChange = {this.onChangeHandler}
             placeholder = 'Год издания книги'
           ></input>
@@ -108,6 +119,7 @@ var Add = React.createClass({
           </label>
   
       {
+        //props деструктуризовать + тернарный оператор
         !this.props.articleEdit && (
           <button
             className ='add__btn'
@@ -132,7 +144,7 @@ var Add = React.createClass({
         </div>
       );
     }
-  });
+  }
   
   function mapStateToProps (state) {
     return {

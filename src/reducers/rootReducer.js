@@ -22,25 +22,25 @@ const initialState = {
 
     switch(action.type){
 
-      case 'ADD_BOOK':{
-        const newState  = Object.assign({},state);
-        let arr = [].concat(newState.data); //должны скопировать массив
+      case 'ADD_BOOK': {
+        const newState  = {...state};
+        let arr = [...newState.data]; 
         arr.unshift (action.payload);
         newState.data = arr;
         return newState;
       }
 
       case 'DELETE_BOOK':{
-        const newState  = Object.assign({},state);
-        let arr = [].concat(newState.data);
+        const newState  = {...state};
+        let arr = [...newState.data];
         arr.splice(action.payload, 1); //удаляем один элемент с позиции delIndex
         newState.data = arr;
         return newState;
       }
 
       case 'SAVE_BOOK':{
-        const newState = Object.assign({},state); 
-        let obj = Object.assign({},state.data[action.payload]);
+        const newState = {...state}; 
+        let obj = {...state.data[action.payload]};
         //нужно скопировать obj в articleEdit
         newState.articleEdit = obj; //запоминаем книгу, которую будем редактировать
         newState.articleEdit.index = action.payload;
@@ -48,11 +48,11 @@ const initialState = {
       }
 
       case 'UPDATE_BOOK':{
-        const newState  = Object.assign({},state);
-        let arr = [].concat(newState.data);
+        const newState  = {...state};
+        let arr = [...newState.data];
         let counter = 0; //для того, чтобы когда совпадёт индекс нужной книги, заменить его
         newState.data = arr.map(function(item){
-          var tempItem = item;
+          let tempItem = item;
           if (counter === action.payload.updIndex) { //редактируем нужную книгу
             tempItem = action.payload;
           }

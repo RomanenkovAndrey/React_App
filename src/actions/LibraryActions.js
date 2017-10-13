@@ -14,7 +14,7 @@ export function deleteBook(delIndex){
 
 export function saveBook(updIndex){
     return{
-        type:'SAVE_BOOK',
+        type:'SAVE_BOOK',//enum
         payload: updIndex
     }
 }

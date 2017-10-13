@@ -1,29 +1,21 @@
-import React from 'react'
+import React, { Component } from 'react'
 
 
-//мы убрали отсюда коннект к Redux
 //формирование списка книг - по одной
-var Article = React.createClass({
-    propTypes: {
-      data: React.PropTypes.shape({
-        author: React.PropTypes.string.isRequired,
-        book: React.PropTypes.string.isRequired,
-        year: React.PropTypes.string.isRequired
-      }) 
-    },
-  
-    onElementUpdateClickHandler: function(e){
+export default class Article extends Component{
+    
+    onElementUpdateClickHandler=(e) =>{
       e.preventDefault();
       this.props.libraryActions.saveBook(this.props.index);
-    },
+    }
   
 
-    onButtonDeleteClickHandler: function(e) {
+    onButtonDeleteClickHandler=(e)=> {
       e.preventDefault();
       this.props.libraryActions.deleteBook(this.props.index);
-    },
+    }
 
-    render: function() {
+    render() {
       const { author, book, year } = this.props.item;
      
       return (
@@ -31,21 +23,28 @@ var Article = React.createClass({
           <p className='book__author'>{ author }:</p>
           <p className='book__text'>{ book }</p>
           <p className='book__year' >{ year } </p>
-         
+
           <button className='del__btn'
             onClick = { this.onButtonDeleteClickHandler }
             >
-           Удалить книгу </button>
+              Удалить книгу 
+           </button>
 
            <button className='upd__btn'
             onClick = { this.onElementUpdateClickHandler } 
             >
-           Редактировать книгу </button>
+              Редактировать книгу
+           </button>
 
         </div>
       );
     }
-  });
+  }
 
-
-  export default Article;
+  Article.propTypes = {
+    data: React.PropTypes.shape({
+      author: React.PropTypes.string.isRequired,
+      book: React.PropTypes.string.isRequired,
+      year: React.PropTypes.string.isRequired
+    })
+  }
