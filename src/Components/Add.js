@@ -8,7 +8,12 @@ class Add extends Component{
 
     constructor(props){
       super(props);
-      this.state = {
+
+      this.state = this.getDefaultState();
+    }
+
+    getDefaultState = () => {
+      return {
         agreeNotChecked: true,
         authorIsEmpty: true,
         bookIsEmpty: true,
@@ -19,7 +24,7 @@ class Add extends Component{
         year:''
       };
     }
-  
+
     componentWillReceiveProps = (nextProps) =>{
        if ( nextProps.articleEdit ) 
         this.setState({ 
@@ -32,34 +37,30 @@ class Add extends Component{
           bookIsEmpty: false,
           yearIsEmpty: false
         });
-    }
+    };
 
     //обработчик добавления книги
     onBtnAddClickHandler = (e)=> {
       e.preventDefault();
      
-      this.props.libraryActions.addBook(this.state.author, this.state.book, this.state.year); 
+      const {author, book, year} = this.state; //как вынести в глобальную область
+      this.props.libraryActions.addBook(author, book, year); 
 
       this.setState(
-        {
-          authorIsEmpty:true,
-          bookIsEmpty:true,
-          yearIsEmpty:true,
-          agreeNotChecked:true,
-          author:'',
-          book:'', 
-          year:''
-        });
+          this.getDefaultState()
+        );
     }
     
     //обработчик редактирования книги
-    onBtnUpdClickHandler = (e) =>{
+    onButtonUpdateClickHandler = (e) =>{
         e.preventDefault();
-  
-        this.props.libraryActions.updateBook(this.state.author, this.state.book, this.state.year, this.state.index);
+
+        const {author, book, year, index} = this.state;
+        this.props.libraryActions.updateBook(author, book, year, index);
         
-        this.setState({authorIsEmpty:true,bookIsEmpty:true,yearIsEmpty:true,
-          agreeNotChecked:true, author:'', book:'', year:''});
+        this.setState(
+          this.getDefaultState()
+      );
     }
 
     //при нажатии на чекбокс на нём появляется/исчезает "галочка"
@@ -77,11 +78,10 @@ class Add extends Component{
   
     render() {
 
+      const {agreeNotChecked, authorIsEmpty, bookIsEmpty, yearIsEmpty, author, book, year} = this.state;
     //валидация кнопок "добавить" и "редактировать"
-      const notAllChecked = (this.state.agreeNotChecked || this.state.authorIsEmpty || 
-        this.state.bookIsEmpty || this.state.yearIsEmpty); 
-        
-      const {author, book, year} =this.state;
+      const notAllChecked = (agreeNotChecked || authorIsEmpty || bookIsEmpty || yearIsEmpty); 
+      let articleEdit = this.props.articleEdit;
   
       return (
         <div className='add cf'>
@@ -114,13 +114,14 @@ class Add extends Component{
           ></input>
   
           <label className='add__checkrule'>
-            <input type='checkbox' checked = {!this.state.agreeNotChecked} //checked и agreeNotChecked противоположны
+            <input type='checkbox' checked = {!agreeNotChecked} //checked и agreeNotChecked противоположны
             onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
           </label>
   
       {
-        //props деструктуризовать + тернарный оператор
-        !this.props.articleEdit && (
+        //тернарный оператор
+        (articleEdit === null)?
+         (
           <button
             className ='add__btn'
             onClick = {this.onBtnAddClickHandler}
@@ -128,13 +129,11 @@ class Add extends Component{
             >
             Добавить книгу
           </button>)
-      }
   
-      {
-        this.props.articleEdit && (
+        :(
           <button
             className ='upd__btn'
-            onClick = {this.onBtnUpdClickHandler}
+            onClick = {this.onButtonUpdateClickHandler}
             disabled = {notAllChecked}
             >
             Редактировать книгу
