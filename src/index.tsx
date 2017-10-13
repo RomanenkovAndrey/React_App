@@ -1,8 +1,8 @@
-import React from 'react'
-import { render } from 'react-dom'
+import * as React from 'react'
+import {render} from 'react-dom'
 import { Provider } from 'react-redux'
-import App from './components/App.js'
-import configureStore from './store/configureStore.js'
+import App from './components/App'
+import configureStore from './store/configureStore'
 
 import './css/style.css';
 

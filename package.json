@@ -35,6 +35,9 @@
     "webpack-hot-middleware": "^2.12.2"
   },
   "dependencies": {
+    "@types/react": "16.0.10",
+    "@types/react-dom": "16.0.1",
+    "@types/react-redux": "5.0.10",
     "babel-polyfill": "^6.13.0",
     "babel-runtime": "^6.11.6",
     "es6-promise": "4.0.5",

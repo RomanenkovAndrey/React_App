@@ -15,10 +15,10 @@ const initialState = {
       year:'2006'
     }],
 
-    articleEdit:null
+    articleEdit: null //интерфейс + include +подставить
   };
   
-  export default function libraryState(state = initialState, action) {
+  export default function libraryState(state = initialState, action:any) {
 
     switch(action.type){
 

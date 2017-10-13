@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+       /* "outFile": "../../built/local/tsc.js",*/
+        "sourceMap": true,
+        "jsx":"react"
+    },
+
+    "files": [
+        "C:/SourceTree/ReactApp/src/actions/LibraryActions.ts",
+        "C:/SourceTree/ReactApp/src/components/Article.tsx",
+        "C:/SourceTree/ReactApp/src/components/Library.tsx",
+        "C:/SourceTree/ReactApp/src/components/Add.tsx",
+        "C:/SourceTree/ReactApp/src/components/App.tsx",
+        "C:/SourceTree/ReactApp/src/reducers/rootReducer.ts",
+        "C:/SourceTree/ReactApp/src/store/configureStore.ts",
+        "C:/SourceTree/ReactApp/src/index.tsx"
+    ]
+  }
