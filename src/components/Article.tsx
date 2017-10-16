@@ -1,17 +1,32 @@
-import * as React from 'react'
-import { Component } from 'react'
+import * as React from 'react';
+import { Component } from 'react';
+import { IBook, IActions } from '/SourceTree/ReactApp/src/interfaces';
 
+interface IProps {
+  index: number,
+  item: IBook
+
+  libraryActions:{
+      deleteBook?(delIndex: number): IActions;
+      saveBook?(updIndex: number): IActions;
+    }
+}
 
 //формирование списка книг - по одной
-export default class Article extends Component{
-    
-    onElementUpdateClickHandler=(e) =>{
+export default class Article extends Component <IProps>{
+  propTypes = {
+    item: React.PropTypes.shape({
+      author: React.PropTypes.string.isRequired,
+      book: React.PropTypes.string.isRequired,
+      year: React.PropTypes.string.isRequired
+    })
+  }
+    onElementUpdateClickHandler=(e: any) =>{
       e.preventDefault();
       this.props.libraryActions.saveBook(this.props.index);
     }
   
-
-    onButtonDeleteClickHandler=(e)=> {
+    onButtonDeleteClickHandler=(e: any)=> {
       e.preventDefault();
       this.props.libraryActions.deleteBook(this.props.index);
     }
@@ -40,12 +55,4 @@ export default class Article extends Component{
         </div>
       );
     }
-  }
-
-  Article.propTypes = {
-    data: React.PropTypes.shape({
-      author: React.PropTypes.string.isRequired,
-      book: React.PropTypes.string.isRequired,
-      year: React.PropTypes.string.isRequired
-    })
   }

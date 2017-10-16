@@ -1,49 +1,55 @@
-import { Component} from 'react'
-import * as libraryActions from '../actions/LibraryActions'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import * as React from 'react';
+import { Component} from 'react';
+import * as libraryActions from '../actions/LibraryActions';
+import { bindActionCreators } from 'redux';
+import { connect, Dispatch } from 'react-redux';
+import { IBook, IActions } from '/SourceTree/ReactApp/src/interfaces';
+
+interface IProps {
+  articleEdit: IBook,
+  data: IBook,
+
+  libraryActions:{
+      addBook(author: string, book: string, year: string): IActions;
+      updateBook(author: string, book: string, year: string, updIndex: number): IActions
+    }
+}
+
+interface IState{
+  data: IBook,
+  isEmpty: boolean,
+  agreeNotChecked: boolean,
+  articleEdit?: IBook
+}
 
 //добавление и редактирование книг
-class Add extends Component{
+class Add extends Component <IProps, IState> {
 
-    constructor(props:any){
+    constructor(props: IProps){
       super(props);
-
       this.state = this.getDefaultState();
     }
 
     getDefaultState = () => {
       return {
+        isEmpty: true,
         agreeNotChecked: true,
-        authorIsEmpty: true,
-        bookIsEmpty: true,
-        yearIsEmpty: true,
-  
-        author:'',
-        book: '',
-        year:''
+        data: {author: '', book: '', year: ''} //data - массив объектов!
       };
     }
 
-    componentWillReceiveProps = (nextProps:any) => {
+    componentWillReceiveProps (nextProps: IProps) {
        if ( nextProps.articleEdit ) 
         this.setState({ 
-          author: nextProps.articleEdit.author,
-          book: nextProps.articleEdit.book,
-          year: nextProps.articleEdit.year,
-          index: nextProps.articleEdit.index,
-  
-          authorIsEmpty: false, 
-          bookIsEmpty: false,
-          yearIsEmpty: false
+          data: nextProps.articleEdit,
+          isEmpty: false
         });
     };
 
-    //обработчик добавления книги
-    onBtnAddClickHandler = (e:any)=> {
+    onBtnAddClickHandler = (e: any)=> {
       e.preventDefault();
      
-      const {author, book, year} = this.state; //как вынести в глобальную область
+      const {author, book, year} = this.state.data;
       this.props.libraryActions.addBook(author, book, year); 
 
       this.setState(
@@ -51,38 +57,61 @@ class Add extends Component{
         );
     }
     
-    //обработчик редактирования книги
-    onButtonUpdateClickHandler = (e:any) =>{
+    onButtonUpdateClickHandler = (e: any) =>{
         e.preventDefault();
 
-        const {author, book, year, index} = this.state;
-        this.props.libraryActions.updateBook(author, book, year, index);
+        const {author, book, year, index} = this.state.data;
+        this.props.libraryActions.updateBook(author, book, year,index);
         
         this.setState(
           this.getDefaultState()
       );
     }
 
-    //при нажатии на чекбокс на нём появляется/исчезает "галочка"
     onCheckRuleClick= ()=> {
       this.setState({agreeNotChecked: !this.state.agreeNotChecked});
     }
   
-    //это изменение состояния value в input и проверка на пустоту (для валидации кнопки)
-    onChangeHandler = (e:any) =>{
+    onChangeHandler = (e: any) =>{
         const id = e.target.id;
-        const value = e.target.value;
-        const isEmpty = (e.target.value.trim().length > 0); //правильное название - notIsEmpty
-        this.setState({[id]:value, [id +'IsEmpty']:!isEmpty});
+        const value = e.target.value.trim();
+
+        let tempItem;
+        switch(id){
+          case 'author':
+          tempItem = {
+            author: value
+          }; 
+
+          case 'book':
+          tempItem = {
+            book: value
+          }; 
+
+          case 'year':
+          tempItem = {
+            year: value
+          }; 
+        }
+        
+        this.setState({
+          data:{
+            ...this.state.data,
+            ...tempItem
+          }
+        });
     }
   
     render() {
 
-      const {agreeNotChecked, authorIsEmpty, bookIsEmpty, yearIsEmpty, author, book, year} = this.state;
-    //валидация кнопок "добавить" и "редактировать"
-      const notAllChecked = (agreeNotChecked || authorIsEmpty || bookIsEmpty || yearIsEmpty); 
-      let articleEdit = this.props.articleEdit;
-  
+      const {agreeNotChecked, data} = this.state;
+      const {author, book, year} = data;
+
+      const articleEdit = this.props.articleEdit;
+
+      const isEmpty = !!data.author.length && !!data.book.length && !!data.year.length;
+      const notAllChecked = isEmpty || agreeNotChecked;
+      
       return (
         <div className='add cf'>
           <input
@@ -114,12 +143,12 @@ class Add extends Component{
           ></input>
   
           <label className='add__checkrule'>
-            <input type='checkbox' checked = {!agreeNotChecked} //checked и agreeNotChecked противоположны
+            <input type='checkbox' checked = {!agreeNotChecked} 
             onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
           </label>
   
       {
-        //тернарный оператор
+
         (articleEdit === null)?
          (
           <button
@@ -145,16 +174,17 @@ class Add extends Component{
     }
   }
   
-  function mapStateToProps (state) {
+  function mapStateToProps (state: IState) {
     return {
+      data: state.data,
       articleEdit: state.articleEdit
     };
   }
 
-  function mapDispatchToProps(dispatch) {
+  function mapDispatchToProps(dispatch: Dispatch <IState>) {
     return {
-      libraryActions: bindActionCreators(libraryActions, dispatch)
+      libraryActions: bindActionCreators<any>(libraryActions, dispatch)
     }
   }
 
-  export default connect(mapStateToProps,mapDispatchToProps)(Add);
+  export default connect(mapStateToProps, mapDispatchToProps)(Add);

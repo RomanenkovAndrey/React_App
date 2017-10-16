@@ -1,27 +1,36 @@
-export function addBook(author: string, book: string, year: string) {
+import {IActions} from '/SourceTree/ReactApp/src/interfaces';
+
+export enum types {
+    ADD_BOOK ='ADD_BOOK', 
+    DELETE_BOOK = 'DELETE_BOOK', 
+    SAVE_BOOK = 'SAVE_BOOK', 
+    UPDATE_BOOK = 'UPDATE_BOOK'
+};
+
+export function addBook(author: string, book: string, year: string): IActions{ 
       return {
-        type:'ADD_BOOK',
-        payload: {author,book,year}
+          type: types.ADD_BOOK,
+          payload: {author,book,year}
       }
     }
 
-export function deleteBook(delIndex: number){
+export function deleteBook(delIndex: number): IActions{
     return{
-        type:'DELETE_BOOK',
+        type: types.DELETE_BOOK,
         payload: delIndex
     }
 }
 
-export function saveBook(updIndex: number){
+export function saveBook(updIndex: number): IActions{
     return{
-        type:'SAVE_BOOK',//enum
+        type: types.SAVE_BOOK,
         payload: updIndex
     }
 }
 
-export function updateBook(author: string, book: string, year: string, updIndex: number){
+export function updateBook(author: string, book: string, year: string, updIndex: number): IActions{
     return{
-        type:'UPDATE_BOOK',
-        payload: {author,book,year,updIndex}
+        type: types.UPDATE_BOOK,
+        payload: {author, book, year, updIndex}
     }
 }

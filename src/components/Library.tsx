@@ -1,18 +1,39 @@
-import { Component} from 'react'
-import * as React from 'react'
-import Article from './Article.js'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as libraryActions from '../actions/LibraryActions'
+import { Component} from 'react';
+import * as React from 'react';
+import Article from './Article.js';
+import { connect, Dispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as libraryActions from '../actions/LibraryActions';
+import {IBook, IActions} from '/SourceTree/ReactApp/src/interfaces';
+import {IData} from '../interfaces';
 
-class Library extends Component{
+interface IProps {
+  data: IBook[];
+}
+
+interface IDispatchProps {
+  libraryActions: {
+    deleteBook(delIndex: number): IActions;
+    saveBook(updIndex: number): IActions;
+  }
+}
+
+interface IState{
+  data: IBook
+}
+
+class Library extends Component <IProps & IDispatchProps, IState> {
+
+  propTypes = {
+    data: React.PropTypes.array.isRequired
+  };
 
   render() {
     const {data, libraryActions} = this.props;
     let libraryTemplate;
 
     if (data.length > 0) {
-      libraryTemplate = data.map((item, index) =>{
+      libraryTemplate = data.map((item: IBook, index: number) => {
         return (
           <div key = {index}>
             <Article item = {item} index = {index} libraryActions = {libraryActions}/> 
@@ -31,21 +52,17 @@ class Library extends Component{
   }
 }
 
-Library.propTypes = {
-  data: React.PropTypes.array.isRequired
-};
 
-
-function mapStateToProps (state) {
+function mapStateToProps (state: IData): IProps {
   return {
     data: state.data
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch: Dispatch <IState>): IDispatchProps {
   return {
-    libraryActions: bindActionCreators(libraryActions, dispatch)
+    libraryActions: bindActionCreators<any>(libraryActions, dispatch)
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Library);
+export default connect<IProps, IDispatchProps, void>(mapStateToProps, mapDispatchToProps)(Library);

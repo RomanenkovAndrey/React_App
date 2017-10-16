@@ -9,7 +9,7 @@ module.exports = {
   entry: [ //откуда начинать сборку
     'webpack-hot-middleware/client', //добавить поддержку hot-reload
     'babel-polyfill',
-    './src/index'
+    './src/index.tsx'
   ],
   output: { //куда генерировать дистрибутив
     path: path.join(__dirname, 'dist'),
@@ -45,7 +45,7 @@ module.exports = {
         loader: "style-loader!css-loader!postcss-loader"
       },
       {
-        test: /\.tsx?$/, loader: 'ts-loader'
+        test: /\.tsx?$/, loader: 'awesome-typescript-loader'
       }
     ],
     postcss: function() {
