@@ -1,19 +1,18 @@
 import {types} from './actions/LibraryActions';
-import {Action} from 'redux';
 
-export interface IBook{
+export interface IBook {
     author: string;
     book: string; 
     year: string;
     index?: number;
 }
 
-export interface IData{
+export interface IData {
   data: IBook[];
-  articleEdit: IBook;
+  articleEdit?: IBook;
 }
 
-export interface IActions{
+export interface IActions {
     type: types;
     payload?: any;
 }

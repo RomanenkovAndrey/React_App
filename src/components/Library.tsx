@@ -1,10 +1,10 @@
 import { Component} from 'react';
 import * as React from 'react';
-import Article from './Article.js';
+import Article from './Article';
 import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as libraryActions from '../actions/LibraryActions';
-import {IBook, IActions} from '/SourceTree/ReactApp/src/interfaces';
+import {IBook, IActions} from '../interfaces';
 import {IData} from '../interfaces';
 
 interface IProps {
@@ -22,11 +22,7 @@ interface IState{
   data: IBook
 }
 
-class Library extends Component <IProps & IDispatchProps, IState> {
-
-  propTypes = {
-    data: React.PropTypes.array.isRequired
-  };
+class Library extends Component<IProps & IDispatchProps, IState> {
 
   render() {
     const {data, libraryActions} = this.props;
@@ -35,17 +31,17 @@ class Library extends Component <IProps & IDispatchProps, IState> {
     if (data.length > 0) {
       libraryTemplate = data.map((item: IBook, index: number) => {
         return (
-          <div key = {index}>
-            <Article item = {item} index = {index} libraryActions = {libraryActions}/> 
+          <div key={index}>
+            <Article item={item} index={index} libraryActions={libraryActions}/> 
           </div>
         )
       })
     } else {
-      libraryTemplate = <p>Ни одна книга ещё не добавлена</p>
+      libraryTemplate=<p>Ни одна книга ещё не добавлена</p>
     }
 
     return (
-      <div className='book'>
+      <div className="book">
         {libraryTemplate}
       </div>
     );

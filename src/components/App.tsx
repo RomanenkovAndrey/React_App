@@ -3,15 +3,15 @@ import { Component } from 'react';
 import Add from './Add';
 import Library from './Library';
 
-export default class App extends Component{
+export default class App extends Component {
 
-  render(){
+  render() {
     return (
-      <div className='app'>
+      <div className="app">
         <Add/>
         <h3>Библиотека</h3>
         <Library />
       </div>
-    )
+    );
   }
 }

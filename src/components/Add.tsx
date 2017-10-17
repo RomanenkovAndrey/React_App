@@ -3,29 +3,29 @@ import { Component} from 'react';
 import * as libraryActions from '../actions/LibraryActions';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
-import { IBook, IActions } from '/SourceTree/ReactApp/src/interfaces';
+import { IBook, IActions } from '../interfaces';
 
 interface IProps {
-  articleEdit: IBook,
+  articleEdit?: IBook,
   data: IBook
 }
 
 interface IDispatchProps {
   libraryActions:{
     addBook(author: string, book: string, year: string): IActions;
-    updateBook(author: string, book: string, year: string, updIndex: number): IActions
+    updateBook(author: string, book: string, year: string, updIndex?: number): IActions
   }
 }
 
 interface IState{
   data: IBook,
-  isEmpty: boolean,
+  isFull: boolean,
   agreeNotChecked: boolean,
   articleEdit?: IBook
 }
 
 //добавление и редактирование книг
-class Add extends Component <IProps & IDispatchProps, IState> {
+class Add extends Component<IProps & IDispatchProps, IState> {
 
     constructor(props: IProps & IDispatchProps){
       super(props);
@@ -34,9 +34,9 @@ class Add extends Component <IProps & IDispatchProps, IState> {
 
     getDefaultState = () => {
       return {
-        isEmpty: true,
+        isFull: false,
         agreeNotChecked: true,
-        data: {author: '', book: '', year: ''} //data - массив объектов!
+        data: {author: '', book: '', year: ''} 
       };
     }
 
@@ -44,11 +44,11 @@ class Add extends Component <IProps & IDispatchProps, IState> {
        if ( nextProps.articleEdit ) 
         this.setState({ 
           data: nextProps.articleEdit,
-          isEmpty: false
+          isFull: false
         });
     };
 
-    onBtnAddClickHandler = (e: any)=> {
+    onBtnAddClickHandler = (e: any) => {
       e.preventDefault();
      
       const {author, book, year} = this.state.data;
@@ -70,34 +70,41 @@ class Add extends Component <IProps & IDispatchProps, IState> {
       );
     }
 
-    onCheckRuleClick= ()=> {
+    onCheckRuleClick= () => {
       this.setState({agreeNotChecked: !this.state.agreeNotChecked});
     }
   
-    onChangeHandler = (e: any) =>{
+    onChangeHandler = (e: any) => {
         const id = e.target.id;
         const value = e.target.value.trim();
 
         let tempItem;
-        switch(id){
-          case 'author':
+
+        switch(id) {
+          case 'author': {
           tempItem = {
             author: value
           }; 
+          break;
+        }
 
-          case 'book':
+          case 'book': {
           tempItem = {
             book: value
           }; 
+          break;
+        }
 
-          case 'year':
+          case 'year': {
           tempItem = {
             year: value
           }; 
+          break;
         }
+      }
         
         this.setState({
-          data:{
+          data: {
             ...this.state.data,
             ...tempItem
           }
@@ -111,17 +118,17 @@ class Add extends Component <IProps & IDispatchProps, IState> {
 
       const articleEdit = this.props.articleEdit;
 
-      const isEmpty = !!data.author.length && !!data.book.length && !!data.year.length;
-      const notAllChecked = isEmpty || agreeNotChecked;
+      const isFull = !!author.length && !!book.length && !!year.length;
+      const notAllChecked = !isFull || agreeNotChecked;
       
       return (
         <div className='add cf'>
           <input
             type='text'
             className='add__author'
-            id = 'author'
-            value = {author} 
-            onChange = {this.onChangeHandler}
+            id='author'
+            value={author} 
+            onChange={this.onChangeHandler}
             placeholder='Имя автора'
             autoFocus
           />
@@ -129,43 +136,43 @@ class Add extends Component <IProps & IDispatchProps, IState> {
           <input
             type='text'
             className='add__book'
-            id = 'book'
-            value = {book}
-            onChange = {this.onChangeHandler} 
+            id='book'
+            value={book}
+            onChange={this.onChangeHandler} 
             placeholder='Название книги'
           ></input>
   
           <input
             type='text'
             className='add__year'
-            id = 'year'
-            value = {year}
-            onChange = {this.onChangeHandler}
-            placeholder = 'Год издания книги'
+            id='year'
+            value={year}
+            onChange={this.onChangeHandler}
+            placeholder='Год издания книги'
           ></input>
   
           <label className='add__checkrule'>
-            <input type='checkbox' checked = {!agreeNotChecked} 
+            <input type='checkbox' checked={!agreeNotChecked} 
             onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
           </label>
   
       {
 
-        (articleEdit === null)?
+        (articleEdit === undefined)?
          (
           <button
-            className ='add__btn'
-            onClick = {this.onBtnAddClickHandler}
-            disabled = {notAllChecked}
+            className='add__btn'
+            onClick={this.onBtnAddClickHandler}
+            disabled={notAllChecked}
             >
             Добавить книгу
           </button>)
   
         :(
           <button
-            className ='upd__btn'
-            onClick = {this.onButtonUpdateClickHandler}
-            disabled = {notAllChecked}
+            className='upd__btn'
+            onClick={this.onButtonUpdateClickHandler}
+            disabled={notAllChecked}
             >
             Редактировать книгу
           </button>)

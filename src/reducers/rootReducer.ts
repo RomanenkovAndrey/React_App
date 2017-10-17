@@ -1,31 +1,31 @@
-import {IData, IActions} from '/SourceTree/ReactApp/src/interfaces';
-import {types} from '../actions/LibraryActions';
+import { IData, IActions } from '../interfaces';
+import { types } from '../actions/LibraryActions';
 
 const initialState: IData = {
-    data:[{
+    data: [{
       author: 'Замятин',
       book: 'Мы',
-      year:'1986'
+      year: '1986'
     },
 
     {
       author: 'Толкиен',
       book: 'Властелин колец',
-      year:'1996'
+      year: '1996'
     },
 
     {
       author: 'Чак Паланик',
       book: 'Бойцовский клуб',
-      year:'2006'
+      year: '2006'
     }],
 
-    articleEdit: null 
+    articleEdit: undefined
   };
   
   export default function rootReducer(state: IData = initialState, action: IActions): IData { 
 
-    switch(action.type){
+    switch(action.type) {
 
       case types.ADD_BOOK: {
         const newState  = {...state};
@@ -47,7 +47,6 @@ const initialState: IData = {
         const newState = {...state}; 
         let obj = {...state.data[action.payload]};
         let objNew = {...obj, index: action.payload};
-        
         newState.articleEdit = objNew;
         return newState;
       }
@@ -65,7 +64,7 @@ const initialState: IData = {
           return tempItem;
         });
 
-        newState.articleEdit = null;
+        newState.articleEdit = undefined;
         return newState;
       }
 
