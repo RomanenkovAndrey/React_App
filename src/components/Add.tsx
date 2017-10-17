@@ -7,12 +7,14 @@ import { IBook, IActions } from '/SourceTree/ReactApp/src/interfaces';
 
 interface IProps {
   articleEdit: IBook,
-  data: IBook,
+  data: IBook
+}
 
+interface IDispatchProps {
   libraryActions:{
-      addBook(author: string, book: string, year: string): IActions;
-      updateBook(author: string, book: string, year: string, updIndex: number): IActions
-    }
+    addBook(author: string, book: string, year: string): IActions;
+    updateBook(author: string, book: string, year: string, updIndex: number): IActions
+  }
 }
 
 interface IState{
@@ -23,9 +25,9 @@ interface IState{
 }
 
 //добавление и редактирование книг
-class Add extends Component <IProps, IState> {
+class Add extends Component <IProps & IDispatchProps, IState> {
 
-    constructor(props: IProps){
+    constructor(props: IProps & IDispatchProps){
       super(props);
       this.state = this.getDefaultState();
     }
@@ -174,17 +176,17 @@ class Add extends Component <IProps, IState> {
     }
   }
   
-  function mapStateToProps (state: IState) {
+  function mapStateToProps (state: IState): IProps {
     return {
       data: state.data,
       articleEdit: state.articleEdit
     };
   }
 
-  function mapDispatchToProps(dispatch: Dispatch <IState>) {
+  function mapDispatchToProps(dispatch: Dispatch <IState>): IDispatchProps {
     return {
       libraryActions: bindActionCreators<any>(libraryActions, dispatch)
     }
   }
 
-  export default connect(mapStateToProps, mapDispatchToProps)(Add);
+  export default connect<IProps, IDispatchProps, void>(mapStateToProps, mapDispatchToProps)(Add);

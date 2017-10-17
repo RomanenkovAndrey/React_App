@@ -1,5 +1,5 @@
 import {IData, IActions} from '/SourceTree/ReactApp/src/interfaces';
-import {types} from '../actions/LibraryActions'
+import {types} from '../actions/LibraryActions';
 
 const initialState: IData = {
     data:[{

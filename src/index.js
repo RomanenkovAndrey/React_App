@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
-import App from './components/App';
-import configureStore from './store/configureStore';
-
+import App from './components/App.tsx';
+import configureStore from './store/configureStore.ts';
 import './css/style.css';
 
 const store = configureStore();
@@ -12,7 +11,7 @@ const store = configureStore();
 render(
   <Provider store={store}>
     <div className='app'>
-      <App />
+      <App/>
     </div>
   </Provider>,
   document.getElementById('root')

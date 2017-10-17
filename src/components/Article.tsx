@@ -7,8 +7,8 @@ interface IProps {
   item: IBook
 
   libraryActions:{
-      deleteBook?(delIndex: number): IActions;
-      saveBook?(updIndex: number): IActions;
+      deleteBook(delIndex: number): IActions;
+      saveBook(updIndex: number): IActions;
     }
 }
 

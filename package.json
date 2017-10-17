@@ -42,6 +42,7 @@
     "awesome-typescript-loader": "3.2.3",
     "babel-polyfill": "^6.13.0",
     "babel-runtime": "^6.11.6",
-    "es6-promise": "4.0.5"
+    "es6-promise": "4.0.5",
+    "typescript-require": "0.2.9-1"
   }
 }

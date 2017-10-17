@@ -53,7 +53,7 @@ class Library extends Component <IProps & IDispatchProps, IState> {
 }
 
 
-function mapStateToProps (state: IData): IProps {
+function mapStateToProps (state: IData): IProps { //чтобы не класть весть Global State, кладём лишь его часть - IData
   return {
     data: state.data
   };

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {Component} from 'react';
+import { Component } from 'react';
 import Add from './Add';
 import Library from './Library';
-
 
 export default class App extends Component{
 

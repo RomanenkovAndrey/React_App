@@ -1,4 +1,4 @@
-import {types} from './actions/LibraryActions'
+import {types} from './actions/LibraryActions';
 import {Action} from 'redux';
 
 export interface IBook{
