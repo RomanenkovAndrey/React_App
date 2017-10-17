@@ -25,7 +25,7 @@ const initialState: IData = {
   
   export default function rootReducer(state: IData = initialState, action: IActions): IData { 
 
-    switch(action.type) {
+    switch (action.type) {
 
       case types.ADD_BOOK: {
         const newState  = {...state};
@@ -35,7 +35,7 @@ const initialState: IData = {
         return newState;
       }
 
-      case types.DELETE_BOOK:{
+      case types.DELETE_BOOK: {
         const newState  = {...state};
         let arr = [...newState.data];
         arr.splice(action.payload, 1);
@@ -43,7 +43,7 @@ const initialState: IData = {
         return newState;
       }
 
-      case types.SAVE_BOOK:{ 
+      case types.SAVE_BOOK: { 
         const newState = {...state}; 
         let obj = {...state.data[action.payload]};
         let objNew = {...obj, index: action.payload};
@@ -51,7 +51,7 @@ const initialState: IData = {
         return newState;
       }
 
-      case  types.UPDATE_BOOK:{
+      case  types.UPDATE_BOOK: {
         const newState  = {...state};
         let arr = [...newState.data];
         let counter = 0; 

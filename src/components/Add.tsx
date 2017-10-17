@@ -1,33 +1,32 @@
 import * as React from 'react';
-import { Component} from 'react';
+import { Component } from 'react';
 import * as libraryActions from '../actions/LibraryActions';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { IBook, IActions } from '../interfaces';
 
 interface IProps {
-  articleEdit?: IBook,
-  data: IBook
+  articleEdit?: IBook;
 }
 
 interface IDispatchProps {
-  libraryActions:{
+  libraryActions: {
     addBook(author: string, book: string, year: string): IActions;
     updateBook(author: string, book: string, year: string, updIndex?: number): IActions
-  }
+  };
 }
 
-interface IState{
-  data: IBook,
-  isFull: boolean,
-  agreeNotChecked: boolean,
-  articleEdit?: IBook
+interface IState {
+  data: IBook;
+  isFull: boolean;
+  agreeNotChecked: boolean;
+  articleEdit?: IBook;
 }
 
-//добавление и редактирование книг
+// добавление и редактирование книг
 class Add extends Component<IProps & IDispatchProps, IState> {
 
-    constructor(props: IProps & IDispatchProps){
+    constructor(props: IProps & IDispatchProps) {
       super(props);
       this.state = this.getDefaultState();
     }
@@ -41,12 +40,12 @@ class Add extends Component<IProps & IDispatchProps, IState> {
     }
 
     componentWillReceiveProps (nextProps: IProps) {
-       if ( nextProps.articleEdit ) 
+       if (nextProps.articleEdit) 
         this.setState({ 
           data: nextProps.articleEdit,
           isFull: false
         });
-    };
+    }
 
     onBtnAddClickHandler = (e: any) => {
       e.preventDefault();
@@ -59,11 +58,11 @@ class Add extends Component<IProps & IDispatchProps, IState> {
         );
     }
     
-    onButtonUpdateClickHandler = (e: any) =>{
+    onButtonUpdateClickHandler = (e: any) => {
         e.preventDefault();
 
         const {author, book, year, index} = this.state.data;
-        this.props.libraryActions.updateBook(author, book, year,index);
+        this.props.libraryActions.updateBook(author, book, year, index);
         
         this.setState(
           this.getDefaultState()
@@ -80,7 +79,7 @@ class Add extends Component<IProps & IDispatchProps, IState> {
 
         let tempItem;
 
-        switch(id) {
+        switch (id) {
           case 'author': {
           tempItem = {
             author: value
@@ -122,58 +121,62 @@ class Add extends Component<IProps & IDispatchProps, IState> {
       const notAllChecked = !isFull || agreeNotChecked;
       
       return (
-        <div className='add cf'>
+        <div className="add cf">
           <input
-            type='text'
-            className='add__author'
-            id='author'
+            type="text"
+            className="add__author"
+            id="author"
             value={author} 
             onChange={this.onChangeHandler}
-            placeholder='Имя автора'
+            placeholder="Имя автора"
             autoFocus
           />
   
           <input
-            type='text'
-            className='add__book'
-            id='book'
+            type="text"
+            className="add__book"
+            id="book"
             value={book}
             onChange={this.onChangeHandler} 
-            placeholder='Название книги'
-          ></input>
+            placeholder="Название книги"
+          />
   
           <input
-            type='text'
-            className='add__year'
-            id='year'
+            type="text"
+            className="add__year"
+            id="year"
             value={year}
             onChange={this.onChangeHandler}
-            placeholder='Год издания книги'
-          ></input>
+            placeholder="Год издания книги"
+          />
   
-          <label className='add__checkrule'>
-            <input type='checkbox' checked={!agreeNotChecked} 
-            onChange={this.onCheckRuleClick}/>Я согласен с правилами сайта
+          <label className="add__checkrule">
+            <input 
+              type="checkbox" 
+              checked={!agreeNotChecked} 
+              onChange={this.onCheckRuleClick}
+            />
+            Я согласен с правилами сайта
           </label>
   
       {
 
-        (articleEdit === undefined)?
+        (articleEdit === undefined) ?
          (
           <button
-            className='add__btn'
+            className="add__btn"
             onClick={this.onBtnAddClickHandler}
             disabled={notAllChecked}
-            >
+          >
             Добавить книгу
           </button>)
   
-        :(
+        : (
           <button
-            className='upd__btn'
+            className="change__button"
             onClick={this.onButtonUpdateClickHandler}
             disabled={notAllChecked}
-            >
+          >
             Редактировать книгу
           </button>)
       }
@@ -185,7 +188,6 @@ class Add extends Component<IProps & IDispatchProps, IState> {
   
   function mapStateToProps (state: IState): IProps {
     return {
-      data: state.data,
       articleEdit: state.articleEdit
     };
   }
@@ -193,7 +195,7 @@ class Add extends Component<IProps & IDispatchProps, IState> {
   function mapDispatchToProps(dispatch: Dispatch <IState>): IDispatchProps {
     return {
       libraryActions: bindActionCreators<any>(libraryActions, dispatch)
-    }
+    };
   }
 
   export default connect<IProps, IDispatchProps, void>(mapStateToProps, mapDispatchToProps)(Add);
